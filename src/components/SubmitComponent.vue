@@ -71,7 +71,6 @@ function submit() {
   display: flex;
   flex-direction: column;
   width: 90%;
-  margin-right: 10px;
 }
 
 .submit-header {
@@ -82,7 +81,6 @@ function submit() {
 .submit-header button {
   all: unset;
   font-size: 30px;
-  font-weight: bold;
   padding-left: 20px;
 }
 
@@ -93,6 +91,7 @@ function submit() {
   border-radius: 10px;
   transition: all 0.3s ease;
   text-align: center;
+  font-weight: bold;
 }
 
 .submit-button:hover {
