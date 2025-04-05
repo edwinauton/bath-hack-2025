@@ -49,7 +49,7 @@ const badges = reactive([
   border-radius: 10px;
   padding: 10px;
   width: 300px;
-  height: 150px;
+  height: 200px;
 }
 
 .badge-inner {
@@ -61,7 +61,7 @@ const badges = reactive([
   transform-style: preserve-3d;
 }
 
-.badge:hover .badge-inner {
+.badge:hover .badge-inner{
   transform: rotateY(180deg);
 }
 
@@ -71,6 +71,8 @@ const badges = reactive([
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .badge-front img {
@@ -84,6 +86,7 @@ const badges = reactive([
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 10px
 }
 
 h2 {
