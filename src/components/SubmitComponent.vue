@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { ref as dbRef, set } from "firebase/database";
+import { ref as dbRef, push, set } from "firebase/database";
 import { db } from "../utils/firebase";
 
 const title = ref("");
@@ -17,10 +17,11 @@ async function submit() {
   collapsed.value = !collapsed.value;
   confirmed.value = true;
 
-  const formattedDate = new Date().toISOString().split('T')[0]
+  const formattedDate = new Date().toISOString().split("T")[0];
 
   const requestRef = dbRef(db, "requests");
-  await set(requestRef, {
+  const newRequestRef = push(requestRef);
+  await set(newRequestRef, {
     title: title.value,
     description: description.value,
     contact: contact.value,
@@ -31,7 +32,7 @@ async function submit() {
   title.value = "";
   description.value = "";
   contact.value = "";
-  tag.value = [];
+  tag.value = "";
   selectedTags.value = [];
 }
 
