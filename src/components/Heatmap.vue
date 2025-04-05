@@ -109,10 +109,6 @@ onMounted(() => {
   width: 30px;
   height: 30px;
   border: 1px solid #e0e0e0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 10px;
   margin: 1px;
   border-radius: 4px;
   position: relative;
@@ -137,6 +133,7 @@ h2 {
   visibility: hidden;
   z-index: 9999;
   user-select: none;
+  font-size: 10px;
 }
 
 .square:hover .tooltip {

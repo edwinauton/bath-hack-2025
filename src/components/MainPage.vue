@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from "vue";
 import router from "../utils/router";
+import { getAuth } from "firebase/auth";
 
 const isMenuVisible = ref(false);
 
@@ -17,8 +18,10 @@ onUnmounted(() => {
 });
 
 function logout() {
-  router.push({ name: "root" });
+  router.push({ name: "login" });
   isMenuVisible.value = false;
+  const auth = getAuth();
+  auth.signOut();
 }
 </script>
 

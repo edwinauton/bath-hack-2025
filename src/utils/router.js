@@ -3,9 +3,11 @@ import ProfilePage from "../components/ProfilePage.vue";
 import RequestsPage from "../components/RequestsPage.vue";
 import MainPage from "../components/MainPage.vue";
 import LoginPage from "../components/LoginPage.vue";
+import RegisterPage from "../components/RegisterPage.vue";
 
 const routes = [
-  { path: "/", name: "root", component: LoginPage },
+  { path: "/", name: "login", component: LoginPage },
+  { path: "/", name: "register", component: RegisterPage },
   {
     path: "/",
     component: MainPage,
