@@ -52,3 +52,23 @@ body {
   transform: translateY(-50%) scale(0.8);
   color: #000;
 }
+
+h1 {
+  font-size: 40px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 30px;
+  text-align: center;
+}
+
+h3 {
+  font-size: 20px;
+  text-align: center;
+}
+
+p {
+  font-size: 15px;
+  text-align: center;
+}

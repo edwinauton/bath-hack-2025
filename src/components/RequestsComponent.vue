@@ -26,6 +26,55 @@ onMounted(() => {
     });
   });
 });
+import { reactive } from "vue";
+
+const requests = reactive([
+  {
+    id: 1,
+    title: "Request 1",
+    date: "2023-10-01",
+    description: "Description of request 1",
+    contact: "07412345678",
+    tags: ["urgent", "important"],
+    isExpanded: false,
+  },
+  {
+    id: 2,
+    title: "Request 2",
+    date: "2023-10-02",
+    description: "Description of request 2",
+    contact: "07412345678",
+    tags: ["urgent", "important"],
+    isExpanded: false,
+  },
+  {
+    id: 3,
+    title: "Request 3",
+    date: "2023-10-03",
+    description: "Description of request 3",
+    contact: "07412345678",
+    tags: ["urgent", "important"],
+    isExpanded: false,
+  },
+  {
+    id: 4,
+    title: "Request 4",
+    date: "2023-10-04",
+    description: "Description of request 4",
+    contact: "07412345678",
+    tags: ["urgent", "important"],
+    isExpanded: false,
+  },
+  {
+    id: 5,
+    title: "Request 5",
+    date: "2023-10-05",
+    description: "Description of request 5",
+    contact: "07412345678",
+    tags: ["urgent", "important"],
+    isExpanded: false,
+  },
+]);
 
 function handleRequest(requestId) {
   console.log(`Handling request with ID: ${requestId}`);
@@ -46,6 +95,7 @@ function handleRequest(requestId) {
             expanded: request.isExpanded,
           }"
         >
+        <li v-for="request in requests" :key="request.id" class="request-item">
           <div
             class="request-content"
             @click="request.isExpanded = !request.isExpanded"
@@ -56,6 +106,10 @@ function handleRequest(requestId) {
                 Submitted {{ request.date }}
 
                 <span v-if="request.tags.length" class="tag-container">
+                <span
+                  v-if="request.tags.length"
+                  class="tag-container"
+                >
                   <span
                     v-for="(tag, index) in request.tags"
                     :key="index"
@@ -70,6 +124,7 @@ function handleRequest(requestId) {
             <div v-if="request.isExpanded" class="request-body">
               <p>{{ request.description }}</p>
               <p class="contact">Contact: {{ request.contact }}</p>
+              <p>Contact: {{ request.contact }}</p>
             </div>
           </div>
 
@@ -117,6 +172,7 @@ function handleRequest(requestId) {
   cursor:
     url("/cursors/expand.png") 16 16,
     auto;
+  cursor: pointer;
 }
 
 #request-list button {
@@ -130,6 +186,7 @@ function handleRequest(requestId) {
 
 #request-list button:hover {
   background-color: #a2bffe;
+  background-color: white;
 }
 
 .request-item {
