@@ -22,7 +22,7 @@ const badges = reactive([
   <div id="badges-container">
     <div v-for="badge in badges" :key="badge.name" class="badge">
       <div class="badge-front">
-        <img :src="/textLogo.jpeg" alt="Logo" />
+        <img :src="'textLogo.jpeg'" alt="Logo" />
       </div>
       <div class="badge-back">
         <h3>{{ badge.name }}</h3>
