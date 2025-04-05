@@ -1,0 +1,16 @@
+body {
+    margin: 0;
+    height: 100vh;
+}
+
+#app {
+    background-color: #f3e4f5;
+    min-height: 100vh;
+}
+
+* {
+    scrollbar-width: thin;
+    box-sizing: border-box;
+    font-family: Consolas, monospace;
+    color: black;
+}
