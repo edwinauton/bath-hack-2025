@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap");
+
 body {
   margin: 0;
   height: 100vh;
@@ -11,6 +13,42 @@ body {
 * {
   scrollbar-width: thin;
   box-sizing: border-box;
-  font-family: Consolas, monospace;
+  font-family: Quicksand;
   color: black;
+}
+
+/* CSS for input fields */
+.input-container {
+  position: relative;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+}
+
+.input-field:disabled ~ .input-placeholder {
+  display: none;
+}
+
+.input-placeholder {
+  position: absolute;
+  top: 25%;
+  left: 0.5rem;
+  background: white;
+  padding: 0 0.25rem;
+  transition: 0.2s ease all;
+  pointer-events: none;
+  color: #999;
+  border-radius: 5px;
+}
+
+.input-field:focus ~ .input-placeholder,
+.input-field:not(:placeholder-shown) ~ .input-placeholder {
+  top: 0;
+  transform: translateY(-50%) scale(0.8);
+  color: #000;
 }
