@@ -28,5 +28,7 @@ const user = ref("KingBob");
 .info img {
   width: 150px;
   height: 150px;
+  border: 3px solid #000;
+  border-radius: 100%;
 }
 </style>
