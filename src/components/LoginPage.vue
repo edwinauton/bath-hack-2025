@@ -15,7 +15,7 @@ async function login() {
 
 <template>
   <div id="login">
-    <img class="logo" src="/images/textLogo.png" alt="" />
+    <img class="logo" src="/images/textLogo.png" alt="" draggable="false"/>
     <div class="login-container">
       <div class="input-container">
         <input class="input-field" v-model="email" placeholder="" required />
@@ -51,10 +51,12 @@ async function login() {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .logo {
-  width: 300px;
+  width: 350px;
 }
 
 .login-container {
