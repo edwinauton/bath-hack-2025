@@ -1,11 +1,9 @@
-<script setup>
-
-</script>
-
 <template>
-
+  <Suspense>
+    <router-view />
+    <template #fallback>
+      <div>Loading...</div>
+    </template>
+  </Suspense>
 </template>
-
-<style scoped>
-
-</style>
+<script setup lang="ts"></script>
