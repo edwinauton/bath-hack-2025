@@ -17,8 +17,8 @@ onUnmounted(() => {
 });
 
 function logout() {
-  router.push({ name: 'root' })
-  isMenuVisible.value = false
+  router.push({ name: "root" });
+  isMenuVisible.value = false;
 }
 </script>
 

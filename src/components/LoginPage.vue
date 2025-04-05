@@ -9,6 +9,7 @@ const hasLoggedIn = ref(false);
 async function login() {
   hasLoggedIn.value = true;
   // TODO: Implement login logic
+  await router.push({ name: "profile" });
 }
 </script>
 
@@ -32,7 +33,11 @@ async function login() {
         <label class="input-placeholder">Password</label>
       </div>
 
-      <button @click="router.push({ name: 'profile' })" class="login-button">
+      <button
+        @click="login"
+        class="login-button"
+        :disabled="!email.trim() || !password.trim() || hasLoggedIn"
+      >
         Login
       </button>
     </div>
@@ -75,9 +80,15 @@ async function login() {
   margin-top: 1.5em;
   width: 100%;
   text-align: center;
+  cursor: pointer;
 }
 
 .login-button:hover {
   background-color: #a2bffe;
+}
+
+.login-button:disabled {
+  color: #555;
+  cursor: not-allowed;
 }
 </style>
