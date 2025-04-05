@@ -1,53 +1,29 @@
 <script setup>
-import { reactive } from "vue";
+import {onMounted, ref} from "vue";
+import {ref as dbRef, onValue } from "firebase/database";
+import {db} from "../utils/firebase";
 
-const requests = reactive([
-  {
-    id: 1,
-    title: "Request 1",
-    date: "2023-10-01",
-    description: "Description of request 1",
-    contact: "07412345678",
-    tags: ["urgent", "important"],
-    isExpanded: false,
-  },
-  {
-    id: 2,
-    title: "Request 2",
-    date: "2023-10-02",
-    description: "Description of request 2",
-    contact: "07412345678",
-    tags: ["urgent", "important"],
-    isExpanded: false,
-  },
-  {
-    id: 3,
-    title: "Request 3",
-    date: "2023-10-03",
-    description: "Description of request 3",
-    contact: "07412345678",
-    tags: ["urgent", "important"],
-    isExpanded: false,
-  },
-  {
-    id: 4,
-    title: "Request 4",
-    date: "2023-10-04",
-    description: "Description of request 4",
-    contact: "07412345678",
-    tags: ["urgent", "important"],
-    isExpanded: false,
-  },
-  {
-    id: 5,
-    title: "Request 5",
-    date: "2023-10-05",
-    description: "Description of request 5",
-    contact: "07412345678",
-    tags: ["urgent", "important"],
-    isExpanded: false,
-  },
-]);
+const requests = ref([]);
+
+onMounted(() => {
+  const requestsRef = dbRef(db, 'requests')
+
+  onValue(requestsRef, (snapshot) => {
+    const data = snapshot.val();
+
+    requests.value.push({
+      id: data.id,
+      title: data.title,
+      description: data.description,
+      contact: data.contact,
+      date: data.date,
+      tags: data.tags || [],
+      isExpanded: false, // Add attribute
+    })
+
+    console.log(requests.value);
+  });
+})
 
 function handleRequest(requestId) {
   console.log(`Handling request with ID: ${requestId}`);

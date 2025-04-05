@@ -17,17 +17,21 @@ async function submit() {
   collapsed.value = !collapsed.value;
   confirmed.value = true;
 
+  const formattedDate = new Date().toISOString().split('T')[0]
+
   const requestRef = dbRef(db, "requests");
   await set(requestRef, {
     title: title.value,
     description: description.value,
     contact: contact.value,
+    date: formattedDate,
     tags: selectedTags.value,
   });
 
   title.value = "";
   description.value = "";
   contact.value = "";
+  tag.value = [];
   selectedTags.value = [];
 }
 
@@ -134,6 +138,7 @@ function removeTag(tag) {
   transition: all 0.3s ease;
   text-align: center;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .submit-button:hover {
