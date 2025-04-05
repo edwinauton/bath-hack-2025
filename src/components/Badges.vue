@@ -3,31 +3,50 @@
 
     const badges = reactive([
         {
-            name: "First Badge",
-            description: "This is the first badge",
+            name: "First Star",
+            description: "Congratulations! You have earned your first star.",
         },
         {
-            name: "Second Badge",
-            description: "This is the second badge",
+            name: "Orion's Belt",
+            description: "Well done on completing 3 star tasks!",
         },
         {
-            name: "Third Badge",
-            description: "This is the third badge",
+            name: "Aries",
+            description: "Great job on completing 5 star tasks!",
         }
     ]);
 </script>
 
 <template>
-    <div>
-        <ul>
-            <li v-for="badge in badges" :key="badge.name">
+    <h2>Badges</h2>
+    <div id="badges-container">
+        <div v-for="badge in badges" :key="badge.name" class="badge">
+            <div class="badge-front">
+                <img :src="/textLogo.jpeg" alt="Logo"/>
+            </div>
+            <div class="badge-back">
                 <h3>{{ badge.name }}</h3>
                 <p>{{ badge.description }}</p>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
-    
-
 </template>
 
-<style scoped></style>
+<style scoped>
+#badges-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px; 
+  padding: 10px; 
+  align-items: center;
+  justify-content: center;
+}
+
+.badge {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 10px;
+  width: 300px;
+  height: 150px;
+}
+</style>
