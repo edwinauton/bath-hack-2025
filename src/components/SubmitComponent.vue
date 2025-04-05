@@ -117,6 +117,7 @@ function removeTag(tag) {
 #submit-container {
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 90%;
   margin-top: 30px;
   user-select: none;
@@ -125,6 +126,7 @@ function removeTag(tag) {
 .submit-header {
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .submit-header button {
@@ -164,6 +166,7 @@ function removeTag(tag) {
   border: 3px solid black;
   border-radius: 10px;
   padding: 20px;
+  width: 90%;
 }
 
 .collapse-button {
