@@ -1,11 +1,11 @@
 <script setup>
-    import Info from './Info.vue';
-    import Badges from './Badges.vue';
+import Info from "./Info.vue";
+import Badges from "./Badges.vue";
 </script>
 
 <template>
-    <Info />
-    <Badges />
+  <Info />
+  <Badges />
 </template>
 
 <style scoped></style>

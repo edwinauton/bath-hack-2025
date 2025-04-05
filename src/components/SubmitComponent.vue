@@ -55,9 +55,9 @@ function removeTag(tag) {
       <h2>Submit a Request</h2>
       <button>
         <i
-            class="fa-solid fa-arrow-right collapse-button"
-            :class="{ collapsed: !collapsed }"
-            @click="collapsed = !collapsed"
+          class="fa-solid fa-arrow-right collapse-button"
+          :class="{ collapsed: !collapsed }"
+          @click="collapsed = !collapsed"
         ></i>
       </button>
     </div>
@@ -80,10 +80,10 @@ function removeTag(tag) {
 
       <div class="input-container">
         <input
-            class="input-field"
-            v-model="tag"
-            placeholder=""
-            @keydown.enter="addNewTag(tag)"
+          class="input-field"
+          v-model="tag"
+          placeholder=""
+          @keydown.enter="addNewTag(tag)"
         />
         <label class="input-placeholder">Tags</label>
       </div>
@@ -96,9 +96,9 @@ function removeTag(tag) {
       </div>
 
       <button
-          @click="submit"
-          class="submit-button"
-          :disabled="!title.trim() || !description.trim() || !selectedTags.length"
+        @click="submit"
+        class="submit-button"
+        :disabled="!title.trim() || !description.trim() || !selectedTags.length"
       >
         Submit
       </button>

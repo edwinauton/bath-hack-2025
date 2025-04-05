@@ -38,17 +38,17 @@ function handleRequest(requestId) {
     <div id="requests">
       <ul id="request-list">
         <li
-            v-for="request in requests"
-            :key="request.id"
-            class="request-item"
-            :class="{
+          v-for="request in requests"
+          :key="request.id"
+          class="request-item"
+          :class="{
             collapsed: !request.isExpanded,
             expanded: request.isExpanded,
           }"
         >
           <div
-              class="request-content"
-              @click="request.isExpanded = !request.isExpanded"
+            class="request-content"
+            @click="request.isExpanded = !request.isExpanded"
           >
             <div class="request-header">
               <h2>{{ request.title }}</h2>
@@ -57,9 +57,9 @@ function handleRequest(requestId) {
 
                 <span v-if="request.tags.length" class="tag-container">
                   <span
-                      v-for="(tag, index) in request.tags"
-                      :key="index"
-                      class="tag"
+                    v-for="(tag, index) in request.tags"
+                    :key="index"
+                    class="tag"
                   >
                     {{ tag }}
                   </span>
@@ -109,14 +109,14 @@ function handleRequest(requestId) {
 
 #request-list li.expanded {
   cursor:
-      url("/cursors/shrink.png") 16 16,
-      auto;
+    url("/cursors/shrink.png") 16 16,
+    auto;
 }
 
 #request-list li.collapsed {
   cursor:
-      url("/cursors/expand.png") 16 16,
-      auto;
+    url("/cursors/expand.png") 16 16,
+    auto;
 }
 
 #request-list button {
