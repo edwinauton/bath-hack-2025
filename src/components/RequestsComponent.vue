@@ -130,11 +130,15 @@ function handleRequest(requestId) {
 }
 
 #request-list li.expanded {
-  cursor: url("/cursors/shrink.png") 16 16, auto;
+  cursor:
+    url("/cursors/shrink.png") 16 16,
+    auto;
 }
 
 #request-list li.collapsed {
-  cursor: url("/cursors/expand.png") 16 16, auto;
+  cursor:
+    url("/cursors/expand.png") 16 16,
+    auto;
 }
 
 #request-list button {
