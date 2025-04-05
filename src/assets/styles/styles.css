@@ -14,10 +14,8 @@ body {
   scrollbar-width: thin;
   box-sizing: border-box;
   font-family: Quicksand;
-  color: black;
 }
 
-/* CSS for input fields */
 .input-container {
   position: relative;
 }

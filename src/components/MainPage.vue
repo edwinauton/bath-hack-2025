@@ -15,6 +15,11 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener("mousemove", handleMouseMove);
 });
+
+function logout() {
+  router.push({ name: "root" });
+  isMenuVisible.value = false;
+}
 </script>
 
 <template>
@@ -35,7 +40,7 @@ onUnmounted(() => {
       <span class="tooltip">Requests</span>
     </button>
 
-    <button class="menu-button sign-out" @click="router.push({ name: 'root' })">
+    <button class="menu-button sign-out" @click="logout">
       <i class="fa-solid fa-right-from-bracket"></i>
       <span class="tooltip">Sign Out</span>
     </button>

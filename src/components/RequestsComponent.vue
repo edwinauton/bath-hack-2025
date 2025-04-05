@@ -87,11 +87,10 @@ function handleRequest(requestId) {
   display: flex;
   flex-direction: column;
   width: 90%;
+  user-select: none;
 }
 
 #requests {
-  border: 3px solid black;
-  border-radius: 10px;
   padding: 20px;
 }
 
@@ -108,24 +107,21 @@ function handleRequest(requestId) {
 }
 
 #request-list li.expanded {
-  cursor:
-    url("/cursors/shrink.png") 16 16,
-    auto;
+  cursor: url("/cursors/shrink.png"), auto;
 }
 
 #request-list li.collapsed {
-  cursor:
-    url("/cursors/expand.png") 16 16,
-    auto;
+  cursor: url("/cursors/expand.png"), auto;
 }
 
 #request-list button {
   all: unset;
   padding: 10px;
   border: 3px solid black;
-  border-radius: 10px;
+  border-radius: 50px;
   transition: all 0.3s ease;
   font-weight: bold;
+  cursor: pointer;
 }
 
 #request-list button:hover {
@@ -135,16 +131,15 @@ function handleRequest(requestId) {
 .request-item {
   display: flex;
   align-items: center;
+  background-color: #f9f9f9;
 }
 
 .request-content {
   flex-grow: 1;
-  user-select: none;
 }
 
 .request-header {
   font-weight: bold;
-  user-select: none;
 }
 
 .tag {
@@ -152,7 +147,6 @@ function handleRequest(requestId) {
   padding: 5px;
   border-radius: 15px;
   font-weight: normal;
-  user-select: none;
 }
 
 .tag-container {

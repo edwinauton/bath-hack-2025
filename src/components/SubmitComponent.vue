@@ -119,6 +119,7 @@ function removeTag(tag) {
   flex-direction: column;
   width: 90%;
   margin-top: 30px;
+  user-select: none;
 }
 
 .submit-header {
