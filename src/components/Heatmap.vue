@@ -1,34 +1,39 @@
 <script setup>
 import { onMounted, ref } from "vue";
+import { get, ref as dbRef } from "firebase/database";
+import { db } from "../utils/firebase";
+import { getAuth } from "firebase/auth";
 
-const inputData = [
-  { date: "2025-04-05", count: 2 },
-  { date: "2025-04-04", count: 3 },
-  { date: "2025-04-03", count: 1 },
-  { date: "2025-04-02", count: 0 },
-  { date: "2025-04-01", count: 3 },
-  { date: "2025-03-31", count: 1 },
-  { date: "2025-03-30", count: 0 },
-  { date: "2025-03-29", count: 0 },
-  { date: "2025-03-28", count: 3 },
-  { date: "2025-03-27", count: 3 },
-  { date: "2025-03-26", count: 0 },
-  { date: "2025-03-25", count: 2 },
-  { date: "2025-03-24", count: 1 },
-  { date: "2025-03-23", count: 3 },
-  { date: "2025-03-22", count: 0 },
-  { date: "2025-03-21", count: 2 },
-  { date: "2025-03-20", count: 1 },
-  { date: "2025-03-19", count: 3 },
-  { date: "2025-03-18", count: 0 },
-  { date: "2025-03-17", count: 2 },
-];
+async function getLast100Days() {
+  const today = new Date();
+  const days = [];
+
+  for (let i = 0; i < 100; i++) {
+    let date = new Date(today);
+    date.setDate(today.getDate() - i);
+    const formattedDate = date.toISOString().split("T")[0]; // YYYY-MM-DD
+    days.push(formattedDate);
+  }
+
+  return days;
+}
+
+async function getStarsForDays(days, userID) {
+  const values = {};
+
+  for (const date of days) {
+    const dateRef = dbRef(db, `users/${userID}/stars/${date}`);
+    const snapshot = await get(dateRef);
+    values[date] = snapshot.exists() ? snapshot.val() : 0; // stars = 0 if not present
+  }
+
+  return values;
+}
 
 const heatmap = ref([]);
-
 const endDate = new Date();
 const startDate = new Date(endDate);
-startDate.setDate(endDate.getDate() - 100);
+startDate.setDate(endDate.getDate() - 99);
 
 function getColor(date) {
   if (!date.count) return "#f4f4f4"; // No activity
@@ -37,18 +42,25 @@ function getColor(date) {
   return "#4caf50"; // High activity
 }
 
-function generateHeatmap() {
+async function generateHeatmap() {
+  const auth = getAuth();
+  const userID = auth.currentUser.uid;
+
+  // Get the last 100 days
+  const days = await getLast100Days();
+
+  // Get the star counts for these days
+  const values = await getStarsForDays(days, userID);
+
   const rows = [];
   let currentRow = [];
   let currentDate = new Date(startDate);
 
   while (currentDate <= endDate) {
+    const formattedDate = currentDate.toISOString().split("T")[0];
     const squareData = {
       date: new Date(currentDate),
-      count:
-        inputData.find(
-          (item) => item.date === currentDate.toISOString().split("T")[0],
-        )?.count || 0,
+      count: values[formattedDate] || 0, // count = 0 if not present
     };
 
     currentRow.push(squareData);
