@@ -3,7 +3,7 @@ import { reactive } from "vue";
 
 const badges = reactive([
   {
-    name: "First Star",
+    name: "Polaris",
     description: "Congratulations! You have earned your first star.",
   },
   {
@@ -23,7 +23,7 @@ const badges = reactive([
     <div v-for="badge in badges" :key="badge.name" class="badge">
       <div class="badge-inner">
         <div class="badge-front">
-          <img src="/images/textLogo.png" alt="Logo" />
+          <img src="/images/pleiades.png" alt="" draggable="false" />
         </div>
         <div class="badge-back">
           <h3>{{ badge.name }}</h3>
@@ -42,10 +42,11 @@ const badges = reactive([
   padding: 10px;
   align-items: center;
   justify-content: center;
+  user-select: none;
 }
 
 .badge {
-  background-color: #f9f9f9; 
+  background-color: #f9f9f9;
   border-radius: 10px;
   padding: 10px;
   width: 300px;
@@ -61,7 +62,7 @@ const badges = reactive([
   transform-style: preserve-3d;
 }
 
-.badge:hover .badge-inner{
+.badge:hover .badge-inner {
   transform: rotateY(180deg);
 }
 
@@ -86,10 +87,12 @@ const badges = reactive([
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 10px
+  padding: 10px;
 }
 
 h2 {
   text-align: center;
+  margin: 20px 0 0 0;
+  user-select: none;
 }
 </style>

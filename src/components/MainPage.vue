@@ -96,6 +96,7 @@ function logout() {
   opacity: 0;
   visibility: hidden;
   z-index: 9999;
+  user-select: none;
 }
 
 .menu-button:hover .tooltip {
