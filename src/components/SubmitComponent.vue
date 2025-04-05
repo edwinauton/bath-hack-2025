@@ -3,7 +3,9 @@ import { ref } from "vue";
 const title = ref("");
 const description = ref("");
 const contact = ref("");
-const tags = ref("");
+const tag = ref("");
+
+const selectedTags = ref([]);
 
 const collapsed = ref(true);
 const confirmed = ref(false);
@@ -11,7 +13,28 @@ const confirmed = ref(false);
 function submit() {
   collapsed.value = !collapsed.value;
   confirmed.value = true;
-  console.log(title.value, description.value, contact.value, tags.value);
+  console.log(
+    title.value,
+    description.value,
+    contact.value,
+    selectedTags.value,
+  );
+  title.value = "";
+  description.value = "";
+  contact.value = "";
+  selectedTags.value = [];
+}
+
+function addNewTag(name) {
+  const trimmedName = name.trim();
+  if (trimmedName && !selectedTags.value.includes(trimmedName)) {
+    selectedTags.value.push(trimmedName);
+  }
+  tag.value = "";
+}
+
+function removeTag(tag) {
+  selectedTags.value = selectedTags.value.filter((t) => t !== tag);
 }
 </script>
 
@@ -30,31 +53,44 @@ function submit() {
 
     <div id="submit" v-if="!collapsed">
       <div class="input-container">
-        <input class="input-field" v-model="title" placeholder="" required />
+        <input class="input-field" v-model="title" placeholder="" />
         <label class="input-placeholder">Request Title</label>
+      </div>
+
+      <div class="input-container">
+        <input class="input-field" v-model="description" placeholder="" />
+        <label class="input-placeholder">Request Description</label>
+      </div>
+
+      <div class="input-container">
+        <input class="input-field" v-model="contact" placeholder="" />
+        <label class="input-placeholder">Contact</label>
       </div>
 
       <div class="input-container">
         <input
           class="input-field"
-          v-model="description"
+          v-model="tag"
           placeholder=""
-          required
+          @keydown.enter="addNewTag(tag)"
         />
-        <label class="input-placeholder">Request Description</label>
-      </div>
-
-      <div class="input-container">
-        <input class="input-field" v-model="contact" placeholder="" required />
-        <label class="input-placeholder">Contact</label>
-      </div>
-
-      <div class="input-container">
-        <input class="input-field" v-model="tags" placeholder="" required />
         <label class="input-placeholder">Tags</label>
       </div>
 
-      <button @click="submit" class="submit-button">Submit</button>
+      <div class="tag-container">
+        <span v-for="(tag, index) in selectedTags" :key="index" class="tag">
+          {{ tag }}
+          <button @click="removeTag(tag)">x</button>
+        </span>
+      </div>
+
+      <button
+        @click="submit"
+        class="submit-button"
+        :disabled="!title.trim() || !description.trim() || !selectedTags.length"
+      >
+        Submit
+      </button>
     </div>
 
     <div class="submit-confirmation" v-if="confirmed && collapsed">
@@ -95,7 +131,12 @@ function submit() {
 }
 
 .submit-button:hover {
-  background-color: white;
+  background-color: #a2bffe;
+}
+
+.submit-button:disabled {
+  color: #555;
+  cursor: not-allowed;
 }
 
 .submit-confirmation {
@@ -109,7 +150,6 @@ function submit() {
   border: 3px solid black;
   border-radius: 10px;
   padding: 20px;
-  cursor: pointer;
 }
 
 .collapse-button {
@@ -125,5 +165,25 @@ function submit() {
   all: unset;
   padding: 10px;
   cursor: pointer;
+}
+
+.tag {
+  display: flex;
+  background-color: #c5a3ff;
+  padding: 5px;
+  border-radius: 15px;
+}
+
+.tag-container {
+  display: flex;
+  gap: 10px;
+}
+
+.tag button {
+  all: unset;
+  font-size: 10px;
+  margin-left: 5px;
+  cursor: pointer;
+  font-weight: bold;
 }
 </style>

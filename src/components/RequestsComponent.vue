@@ -59,7 +59,15 @@ function handleRequest(requestId) {
     <h2>Ongoing Requests</h2>
     <div id="requests">
       <ul id="request-list">
-        <li v-for="request in requests" :key="request.id" class="request-item">
+        <li
+          v-for="request in requests"
+          :key="request.id"
+          class="request-item"
+          :class="{
+            collapsed: !request.isExpanded,
+            expanded: request.isExpanded,
+          }"
+        >
           <div
             class="request-content"
             @click="request.isExpanded = !request.isExpanded"
@@ -68,10 +76,8 @@ function handleRequest(requestId) {
               <h2>{{ request.title }}</h2>
               <p>
                 Submitted {{ request.date }}
-                <span
-                  v-if="request.tags.length"
-                  class="tag-container"
-                >
+
+                <span v-if="request.tags.length" class="tag-container">
                   <span
                     v-for="(tag, index) in request.tags"
                     :key="index"
@@ -85,7 +91,7 @@ function handleRequest(requestId) {
 
             <div v-if="request.isExpanded" class="request-body">
               <p>{{ request.description }}</p>
-              <p>Contact: {{ request.contact }}</p>
+              <p class="contact">Contact: {{ request.contact }}</p>
             </div>
           </div>
 
@@ -121,7 +127,14 @@ function handleRequest(requestId) {
   border-radius: 10px;
   padding: 15px;
   margin-bottom: 10px;
-  cursor: pointer;
+}
+
+#request-list li.expanded {
+  cursor: url("/cursors/shrink.png") 16 16, auto;
+}
+
+#request-list li.collapsed {
+  cursor: url("/cursors/expand.png") 16 16, auto;
 }
 
 #request-list button {
@@ -134,7 +147,7 @@ function handleRequest(requestId) {
 }
 
 #request-list button:hover {
-  background-color: white;
+  background-color: #a2bffe;
 }
 
 .request-item {
@@ -144,10 +157,12 @@ function handleRequest(requestId) {
 
 .request-content {
   flex-grow: 1;
+  user-select: none;
 }
 
 .request-header {
   font-weight: bold;
+  user-select: none;
 }
 
 .tag {
@@ -155,11 +170,16 @@ function handleRequest(requestId) {
   padding: 5px;
   border-radius: 15px;
   font-weight: normal;
+  user-select: none;
 }
 
 .tag-container {
   display: inline-flex;
   margin-left: 10px;
   gap: 10px;
+}
+
+.contact {
+  font-style: italic;
 }
 </style>
