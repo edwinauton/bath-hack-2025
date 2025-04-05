@@ -6,8 +6,14 @@ const user = ref("KingBob");
 </script>
 
 <template>
-  <h2>{{ name }}</h2>
-  <h3>{{ user }}</h3>
+  <div class="info">
+    <h2>{{ name }}</h2>
+    <h3>{{ user }}</h3>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.info h2, h3{
+  text-align: center;
+}
+</style>

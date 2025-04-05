@@ -21,12 +21,14 @@ const badges = reactive([
   <h2>Badges</h2>
   <div id="badges-container">
     <div v-for="badge in badges" :key="badge.name" class="badge">
-      <div class="badge-front">
-        <img :src="'textLogo.jpeg'" alt="Logo" />
-      </div>
-      <div class="badge-back">
-        <h3>{{ badge.name }}</h3>
-        <p>{{ badge.description }}</p>
+      <div class="badge-inner">
+        <div class="badge-front">
+          <img :src="'textLogo.jpeg'" alt="Logo" />
+        </div>
+        <div class="badge-back">
+          <h3>{{ badge.name }}</h3>
+          <p>{{ badge.description }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -43,10 +45,48 @@ const badges = reactive([
 }
 
 .badge {
-  background-color: #f9f9f9;
+  background-color: #f9f9f9; 
   border-radius: 10px;
   padding: 10px;
   width: 300px;
   height: 150px;
+}
+
+.badge-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.badge:hover .badge-inner {
+  transform: rotateY(180deg);
+}
+
+.badge-front,
+.badge-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.badge-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.badge-back {
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+h2 {
+  text-align: center;
 }
 </style>
