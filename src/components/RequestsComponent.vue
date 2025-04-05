@@ -8,6 +8,7 @@ const requests = reactive([
     date: "2023-10-01",
     description: "Description of request 1",
     contact: "07412345678",
+    tags: ["urgent", "important"],
     isExpanded: false,
   },
   {
@@ -16,6 +17,7 @@ const requests = reactive([
     date: "2023-10-02",
     description: "Description of request 2",
     contact: "07412345678",
+    tags: ["urgent", "important"],
     isExpanded: false,
   },
   {
@@ -24,6 +26,7 @@ const requests = reactive([
     date: "2023-10-03",
     description: "Description of request 3",
     contact: "07412345678",
+    tags: ["urgent", "important"],
     isExpanded: false,
   },
   {
@@ -32,6 +35,7 @@ const requests = reactive([
     date: "2023-10-04",
     description: "Description of request 4",
     contact: "07412345678",
+    tags: ["urgent", "important"],
     isExpanded: false,
   },
   {
@@ -40,6 +44,7 @@ const requests = reactive([
     date: "2023-10-05",
     description: "Description of request 5",
     contact: "07412345678",
+    tags: ["urgent", "important"],
     isExpanded: false,
   },
 ]);
@@ -61,7 +66,21 @@ function handleRequest(requestId) {
           >
             <div class="request-header">
               <h2>{{ request.title }}</h2>
-              <p>Submitted {{ request.date }}</p>
+              <p>
+                Submitted {{ request.date }}
+                <span
+                  v-if="request.tags.length"
+                  class="tag-container"
+                >
+                  <span
+                    v-for="(tag, index) in request.tags"
+                    :key="index"
+                    class="tag"
+                  >
+                    {{ tag }}
+                  </span>
+                </span>
+              </p>
             </div>
 
             <div v-if="request.isExpanded" class="request-body">
@@ -111,6 +130,7 @@ function handleRequest(requestId) {
   border: 3px solid black;
   border-radius: 10px;
   transition: all 0.3s ease;
+  font-weight: bold;
 }
 
 #request-list button:hover {
@@ -123,10 +143,23 @@ function handleRequest(requestId) {
 }
 
 .request-content {
-  flex-grow: 1; /* Expand to fill div */
+  flex-grow: 1;
 }
 
 .request-header {
   font-weight: bold;
+}
+
+.tag {
+  background-color: #c5a3ff;
+  padding: 5px;
+  border-radius: 15px;
+  font-weight: normal;
+}
+
+.tag-container {
+  display: inline-flex;
+  margin-left: 10px;
+  gap: 10px;
 }
 </style>
