@@ -1,5 +1,21 @@
-<script setup></script>
+<script setup>
+import RequestsComponent from "./RequestsComponent.vue";
+import SubmitComponent from "./SubmitComponent.vue";
+</script>
 
-<template></template>
+<template>
+  <div id="request-page">
+    <SubmitComponent />
+    <RequestsComponent />
+  </div>
+</template>
 
-<style scoped></style>
+<style scoped>
+#request-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  gap: 20px;
+}
+</style>
