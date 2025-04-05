@@ -40,6 +40,11 @@ function logout() {
       <span class="tooltip">Requests</span>
     </button>
 
+    <button class="menu-button random" @click="router.push({ name: 'random' })">
+      <i class="fa-solid fa-dice-five"></i>
+      <span class="tooltip">Random</span>
+    </button>
+
     <button class="menu-button sign-out" @click="logout">
       <i class="fa-solid fa-right-from-bracket"></i>
       <span class="tooltip">Sign Out</span>
@@ -71,7 +76,7 @@ function logout() {
   position: relative;
   background-color: transparent;
   padding: 10px;
-  width: 35%;
+  width: 25%;
   height: 100%;
   border: none;
   outline: none;
