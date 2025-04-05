@@ -1,0 +1,8 @@
+.git
+.idea
+node_modules
+.dockerignore
+.gitignore
+.prettierignore
+Dockerfile
+eslint.config.mjs
