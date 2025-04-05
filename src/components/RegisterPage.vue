@@ -1,16 +1,33 @@
 <script setup>
 import { ref } from "vue";
-import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { ref as dbRef, set } from "firebase/database";
 import router from "../utils/router";
+import { db } from "../utils/firebase";
 
+const firstName = ref("");
+const lastName = ref("");
+const username = ref("");
 const email = ref("");
 const password = ref("");
 
-async function login() {
+async function register() {
   try {
     const auth = getAuth();
-    await signInWithEmailAndPassword(auth, email.value, password.value);
-    await router.push({ name: "profile" });
+    await createUserWithEmailAndPassword(
+      auth,
+      email.value,
+      password.value,
+    ).then(async (userCredential) => {
+      const user = userCredential.user;
+      const userRef = dbRef(db, `users/${user.uid}`);
+      await set(userRef, {
+        first_name: firstName.value,
+        last_name: lastName.value,
+        username: username.value,
+      });
+    });
+    await router.push({ name: "login" });
   } catch (err) {
     console.log(err.message);
   }
@@ -21,6 +38,26 @@ async function login() {
   <div id="login">
     <img class="logo" src="/images/textLogo.png" alt="" draggable="false" />
     <div class="login-container">
+      <div class="input-container">
+        <input
+          class="input-field"
+          v-model="firstName"
+          placeholder=""
+          required
+        />
+        <label class="input-placeholder">First Name</label>
+      </div>
+
+      <div class="input-container">
+        <input class="input-field" v-model="lastName" placeholder="" required />
+        <label class="input-placeholder">Last Name</label>
+      </div>
+
+      <div class="input-container">
+        <input class="input-field" v-model="username" placeholder="" required />
+        <label class="input-placeholder">Username</label>
+      </div>
+
       <div class="input-container">
         <input class="input-field" v-model="email" placeholder="" required />
         <label class="input-placeholder">Email</label>
@@ -38,14 +75,10 @@ async function login() {
       </div>
 
       <button
-        @click="login"
+        @click="register"
         class="login-button"
-        :disabled="!email.trim() || !password.trim()"
+        :disabled="!email.trim() || !username.trim() || !password.trim()"
       >
-        Login
-      </button>
-
-      <button @click="router.push({ name: 'register' })" class="login-button">
         Register
       </button>
     </div>
