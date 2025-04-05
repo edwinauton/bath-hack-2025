@@ -3,6 +3,7 @@ import ProfilePage from "../components/ProfilePage.vue";
 import RequestsPage from "../components/RequestsPage.vue";
 import MainPage from "../components/MainPage.vue";
 import LoginPage from "../components/LoginPage.vue";
+import RandomPage from "../components/RandomPage.vue";
 
 const routes = [
   { path: "/", name: "root", component: LoginPage },
@@ -12,6 +13,7 @@ const routes = [
     children: [
       { path: "profile", name: "profile", component: ProfilePage },
       { path: "requests", name: "requests", component: RequestsPage },
+      { path: "random", name: "random", component: RandomPage },
     ],
   },
 ];
