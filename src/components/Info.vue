@@ -1,15 +1,34 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { getAuth } from "firebase/auth";
+import { ref as dbRef, get } from "firebase/database";
+import { db } from "../utils/firebase";
 
-const name = ref("Bob Minion");
-const user = ref("KingBob");
+const user = ref({
+  first_name: "",
+  last_name: "",
+  username: "",
+});
+
+onMounted(async () => {
+  const auth = getAuth();
+  const userID = auth.currentUser.uid;
+  const userRef = dbRef(db, `users/${userID}`);
+
+  try {
+    const snapshot = await get(userRef);
+    user.value = snapshot.val();
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+  }
+});
 </script>
 
 <template>
   <div class="info">
     <img src="/images/blank.png" alt="" draggable="false" />
-    <h1>{{ name }}</h1>
-    <h3>{{ user }}</h3>
+    <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+    <h3>{{ user.username }}</h3>
   </div>
 </template>
 

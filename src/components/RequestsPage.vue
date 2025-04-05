@@ -1,12 +1,12 @@
 <script setup>
-import RequestsComponent from "./RequestsComponent.vue";
-import SubmitComponent from "./SubmitComponent.vue";
+import Requests from "./Requests.vue";
+import Submit from "./Submit.vue";
 </script>
 
 <template>
   <div id="request-page">
-    <SubmitComponent />
-    <RequestsComponent />
+    <Submit />
+    <Requests />
   </div>
 </template>
 

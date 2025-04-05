@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from "vue";
 import router from "../utils/router";
+import { getAuth } from "firebase/auth";
 
 const isMenuVisible = ref(false);
 
@@ -17,8 +18,10 @@ onUnmounted(() => {
 });
 
 function logout() {
-  router.push({ name: "root" });
+  router.push({ name: "login" });
   isMenuVisible.value = false;
+  const auth = getAuth();
+  auth.signOut();
 }
 </script>
 
@@ -38,6 +41,11 @@ function logout() {
     >
       <i class="fa-solid fa-sign-hanging"></i>
       <span class="tooltip">Requests</span>
+    </button>
+
+    <button class="menu-button random" @click="router.push({ name: 'random' })">
+      <i class="fa-solid fa-dice-five"></i>
+      <span class="tooltip">Random</span>
     </button>
 
     <button class="menu-button sign-out" @click="logout">
@@ -71,7 +79,7 @@ function logout() {
   position: relative;
   background-color: transparent;
   padding: 10px;
-  width: 35%;
+  width: 25%;
   height: 100%;
   border: none;
   outline: none;
