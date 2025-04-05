@@ -3,11 +3,12 @@ import { ref } from "vue";
 import { ref as dbRef, push, set } from "firebase/database";
 import { db } from "../utils/firebase";
 
-const selectedTags = ref([]);
 const title = ref("");
 const description = ref("");
 const contact = ref("");
-const tags = ref("");
+const tag = ref("");
+
+const selectedTags = ref([]);
 
 const collapsed = ref(true);
 const confirmed = ref(false);
@@ -45,10 +46,6 @@ function addNewTag(name) {
 
 function removeTag(tag) {
   selectedTags.value = selectedTags.value.filter((t) => t !== tag);
-function submit() {
-  collapsed.value = !collapsed.value;
-  confirmed.value = true;
-  console.log(title.value, description.value, contact.value, tags.value);
 }
 </script>
 
@@ -58,16 +55,16 @@ function submit() {
       <h2>Submit a Request</h2>
       <button>
         <i
-          class="fa-solid fa-arrow-right collapse-button"
-          :class="{ collapsed: !collapsed }"
-          @click="collapsed = !collapsed"
+            class="fa-solid fa-arrow-right collapse-button"
+            :class="{ collapsed: !collapsed }"
+            @click="collapsed = !collapsed"
         ></i>
       </button>
     </div>
 
     <div id="submit" v-if="!collapsed">
       <div class="input-container">
-        <input class="input-field" v-model="title" placeholder="" required />
+        <input class="input-field" v-model="title" placeholder="" />
         <label class="input-placeholder">Request Title</label>
       </div>
 
@@ -77,16 +74,16 @@ function submit() {
       </div>
 
       <div class="input-container">
-        <input class="input-field" v-model="contact" placeholder="" required />
+        <input class="input-field" v-model="contact" placeholder="" />
         <label class="input-placeholder">Contact</label>
       </div>
 
       <div class="input-container">
         <input
-          class="input-field"
-          v-model="tag"
-          placeholder=""
-          @keydown.enter="addNewTag(tag)"
+            class="input-field"
+            v-model="tag"
+            placeholder=""
+            @keydown.enter="addNewTag(tag)"
         />
         <label class="input-placeholder">Tags</label>
       </div>
@@ -99,9 +96,9 @@ function submit() {
       </div>
 
       <button
-        @click="submit"
-        class="submit-button"
-        :disabled="!title.trim() || !description.trim() || !selectedTags.length"
+          @click="submit"
+          class="submit-button"
+          :disabled="!title.trim() || !description.trim() || !selectedTags.length"
       >
         Submit
       </button>
@@ -121,6 +118,7 @@ function submit() {
   display: flex;
   flex-direction: column;
   width: 90%;
+  margin-top: 30px;
 }
 
 .submit-header {
@@ -165,7 +163,6 @@ function submit() {
   border: 3px solid black;
   border-radius: 10px;
   padding: 20px;
-  cursor: pointer;
 }
 
 .collapse-button {
