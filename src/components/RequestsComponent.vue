@@ -1,29 +1,31 @@
 <script setup>
-import {onMounted, ref} from "vue";
-import {ref as dbRef, onValue } from "firebase/database";
-import {db} from "../utils/firebase";
+import { onMounted, ref } from "vue";
+import { ref as dbRef, onValue } from "firebase/database";
+import { db } from "../utils/firebase";
 
 const requests = ref([]);
 
 onMounted(() => {
-  const requestsRef = dbRef(db, 'requests')
+  const requestsRef = dbRef(db, "requests");
 
   onValue(requestsRef, (snapshot) => {
-    const data = snapshot.val();
+    requests.value = []; // Clear array
 
-    requests.value.push({
-      id: data.id,
-      title: data.title,
-      description: data.description,
-      contact: data.contact,
-      date: data.date,
-      tags: data.tags || [],
-      isExpanded: false, // Add attribute
-    })
+    snapshot.forEach((child) => {
+      const data = child.val();
 
-    console.log(requests.value);
+      requests.value.push({
+        id: child.key, // Use the key as the ID
+        title: data.title,
+        description: data.description,
+        contact: data.contact,
+        date: data.date,
+        tags: data.tags || [],
+        isExpanded: false, // Add attribute
+      });
+    });
   });
-})
+});
 
 function handleRequest(requestId) {
   console.log(`Handling request with ID: ${requestId}`);
