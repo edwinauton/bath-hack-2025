@@ -1,5 +1,8 @@
 <script setup>
 import { ref } from "vue";
+import { ref as dbRef, set } from "firebase/database";
+import { db } from "../utils/firebase";
+
 const title = ref("");
 const description = ref("");
 const contact = ref("");
@@ -10,18 +13,25 @@ const selectedTags = ref([]);
 const collapsed = ref(true);
 const confirmed = ref(false);
 
-function submit() {
+async function submit() {
   collapsed.value = !collapsed.value;
   confirmed.value = true;
-  console.log(
-    title.value,
-    description.value,
-    contact.value,
-    selectedTags.value,
-  );
+
+  const formattedDate = new Date().toISOString().split('T')[0]
+
+  const requestRef = dbRef(db, "requests");
+  await set(requestRef, {
+    title: title.value,
+    description: description.value,
+    contact: contact.value,
+    date: formattedDate,
+    tags: selectedTags.value,
+  });
+
   title.value = "";
   description.value = "";
   contact.value = "";
+  tag.value = [];
   selectedTags.value = [];
 }
 
@@ -128,6 +138,7 @@ function removeTag(tag) {
   transition: all 0.3s ease;
   text-align: center;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .submit-button:hover {
