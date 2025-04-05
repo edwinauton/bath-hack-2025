@@ -1,7 +1,8 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import { ref as dbRef, onValue } from "firebase/database";
+import { ref as dbRef, onValue, get, set, remove } from "firebase/database";
 import { db } from "../utils/firebase";
+import { getAuth } from "firebase/auth";
 
 const requests = ref([]);
 
@@ -27,8 +28,20 @@ onMounted(() => {
   });
 });
 
-function handleRequest(requestId) {
-  console.log(`Handling request with ID: ${requestId}`);
+async function handleRequest(requestId) {
+  // Remove the request from the database
+  const removeRef = dbRef(db, `requests/${requestId}`);
+  await remove(removeRef);
+
+  // +1 to user's daily stars
+  const auth = getAuth();
+  const userID = auth.currentUser.uid;
+  const formattedDate = new Date().toISOString().split("T")[0];
+
+  const incrementRef = dbRef(db, `users/${userID}/stars/${formattedDate}`);
+  const snapshot = await get(incrementRef);
+  let stars = snapshot.exists() ? snapshot.val() : 0; // stars = 0 if key doesn't exist
+  await set(incrementRef, (stars += 1));
 }
 </script>
 
