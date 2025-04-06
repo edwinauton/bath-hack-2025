@@ -114,7 +114,6 @@ async function chatGPT() {
             @touchmove.prevent="scratch"
         ></canvas>
     </div>
-  </div>
 </template>
 
 <style scoped>
