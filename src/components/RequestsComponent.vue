@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { ref as dbRef, onValue, get, set, remove } from "firebase/database";
 import { db } from "../utils/firebase";
 import { getAuth } from "firebase/auth";
@@ -7,7 +7,10 @@ import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 
+const search = ref("");
 const requests = ref([]);
+const matchingTags = ref([]);
+const selectedTags = ref([]);
 
 onMounted(() => {
   const requestsRef = dbRef(db, "requests");
@@ -58,15 +61,81 @@ async function updateTotalStars(userID) {
   let stars = snapshot.exists() ? snapshot.val() : 0; // stars = 0 if key doesn't exist
   await set(incrementTotalRef, stars + 1);
 }
+
+function addNewTag(name) {
+  const trimmedName = name.trim();
+  if (!selectedTags.value.includes(trimmedName)) {
+    selectedTags.value.push(trimmedName);
+  }
+  search.value = "";
+  matchingTags.value = [];
+}
+
+function filterRequestsByTags() {
+  if (!selectedTags.value.length) {
+    return requests.value;
+  } else {
+    return requests.value.filter((request) =>
+      selectedTags.value.every((tag) => request.tags.includes(tag)),
+    );
+  }
+}
+
+function removeTag(tag) {
+  selectedTags.value = selectedTags.value.filter((t) => t !== tag);
+}
+
+async function updateMatchingTags(search) {
+  if (search.trim().length) {
+    const tagsRef = dbRef(db, "tags");
+    const snapshot = await get(tagsRef);
+    if (snapshot.exists()) {
+      matchingTags.value = Object.keys(snapshot.val()).filter((tag) =>
+        tag.includes(search),
+      );
+    }
+  } else {
+    matchingTags.value = [];
+  }
+}
+
+watch(search, (newSearch) => {
+  updateMatchingTags(newSearch);
+});
 </script>
 
 <template>
   <div id="requests-container">
     <h2>{{ t("requests.title") }}</h2>
+    <div class="input-container">
+      <input class="input-field" v-model="search" placeholder="" />
+      <label class="input-placeholder">{{
+        t("requests.input.placeholder.searchTags")
+      }}</label>
+    </div>
+
+    <div v-if="matchingTags.length" class="dropdown">
+      <div
+        v-for="tag in matchingTags"
+        :key="tag"
+        @click="addNewTag(tag)"
+        class="dropdown-item"
+      >
+        {{ tag }}
+      </div>
+    </div>
+
+    <div class="search-container">
+      <span v-for="(tag, index) in selectedTags" :key="index" class="tag">
+        {{ tag }}
+        <button @click="removeTag(tag)">x</button>
+      </span>
+    </div>
+
     <div id="requests">
       <ul id="request-list">
         <li
-          v-for="request in requests"
+          v-for="request in filterRequestsByTags()"
           :key="request.id"
           class="request-item"
           :class="{
@@ -197,5 +266,41 @@ async function updateTotalStars(userID) {
 
 .contact {
   font-style: italic;
+}
+
+.tag {
+  display: flex;
+  background-color: #c5a3ff;
+  padding: 5px;
+  border-radius: 15px;
+}
+
+.search-container {
+  display: flex;
+  padding: 10px;
+  gap: 10px;
+}
+
+.tag button {
+  all: unset;
+  font-size: 10px;
+  margin-left: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.dropdown {
+  position: absolute;
+  top: 290px;
+}
+
+.dropdown-item {
+  background-color: #c0d7ff;
+  padding: 5px 15px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #a2bffe;
 }
 </style>

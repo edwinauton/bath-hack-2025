@@ -22,6 +22,7 @@
   "register.button": "Register",
 
   "requests.title": "Ongoing Requests",
+  "requests.input.placeholder.searchTags": "Search Tags...",
   "requests.label.date": "Submitted {date}",
   "requests.label.contact": "Contact {contact}",
   "requests.button.accept": "Accept",

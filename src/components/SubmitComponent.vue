@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from "vue";
-import { ref as dbRef, push, set } from "firebase/database";
+import { ref, watch } from "vue";
+import { ref as dbRef, push, set, get } from "firebase/database";
 import { db } from "../utils/firebase";
 import { useI18n } from "vue-i18n";
 
@@ -12,6 +12,7 @@ const contact = ref("");
 const tag = ref("");
 
 const selectedTags = ref([]);
+const matchingTags = ref([]);
 
 const collapsed = ref(true);
 const confirmed = ref(false);
@@ -32,6 +33,8 @@ async function submit() {
     tags: selectedTags.value,
   });
 
+  await createTags();
+
   title.value = "";
   description.value = "";
   contact.value = "";
@@ -45,11 +48,40 @@ function addNewTag(name) {
     selectedTags.value.push(trimmedName);
   }
   tag.value = "";
+  matchingTags.value = [];
 }
 
 function removeTag(tag) {
   selectedTags.value = selectedTags.value.filter((t) => t !== tag);
 }
+
+async function createTags() {
+  const existingTagsRef = dbRef(db, "tags");
+  let existingTags = await get(existingTagsRef);
+  existingTags = existingTags.exists() ? existingTags.val() : [];
+
+  for (const tag of selectedTags.value) {
+    if (!existingTags.includes(tag)) {
+      await set(dbRef(db, `tags/${tag}`), true);
+    }
+  }
+}
+
+async function updateMatchingTags(search) {
+  if (search.trim().length) {
+    const tagsRef = dbRef(db, "tags");
+    const snapshot = await get(tagsRef);
+    if (snapshot.exists()) {
+      matchingTags.value = Object.keys(snapshot.val()).filter((tag) =>
+        tag.includes(search),
+      );
+    }
+  }
+}
+
+watch(tag, (newTag) => {
+  updateMatchingTags(newTag);
+});
 </script>
 
 <template>
@@ -104,6 +136,17 @@ function removeTag(tag) {
           {{ tag }}
           <button @click="removeTag(tag)">x</button>
         </span>
+      </div>
+
+      <div v-if="matchingTags.length" class="dropdown">
+        <div
+          v-for="tag in matchingTags"
+          :key="tag"
+          @click="addNewTag(tag)"
+          class="dropdown-item"
+        >
+          {{ tag }}
+        </div>
       </div>
 
       <button
@@ -213,5 +256,20 @@ function removeTag(tag) {
   margin-left: 5px;
   cursor: pointer;
   font-weight: bold;
+}
+
+.dropdown {
+  position: absolute;
+  top: 370px;
+}
+
+.dropdown-item {
+  background-color: #c0d7ff;
+  padding: 5px 15px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #a2bffe;
 }
 </style>

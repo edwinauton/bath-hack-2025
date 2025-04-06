@@ -45,6 +45,7 @@ async function login() {
           type="password"
           placeholder=""
           required
+          @keydown.enter="login"
         />
         <label class="input-placeholder">{{
           t("login.input.placeholder.password")
