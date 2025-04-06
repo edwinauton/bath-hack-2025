@@ -150,7 +150,7 @@ async function updateTotalStars(userID) {
 }
 
 #request-list button:hover {
-  background-color: #a2bffe;
+  background-color: #c0d7ff;
 }
 
 .request-item {
