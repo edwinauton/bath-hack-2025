@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, ref } from "vue";
+import RandomTitle from "./RandomTitle.vue";
 
 const canvas = ref(null);
 const hiddenText = ref(
@@ -8,17 +9,23 @@ const hiddenText = ref(
 
 let isScratching = false;
 let ctx = null;
+let scratchAudio = null;
 
 onMounted(() => {
   const canvasEl = canvas.value;
   canvasEl.width = canvasEl.offsetWidth;
   canvasEl.height = canvasEl.offsetHeight;
   ctx = canvasEl.getContext("2d");
+  
+    ctx.fillStyle = "#aaa";
+    ctx.fillRect(0, 0, canvasEl.width, canvasEl.height);
 
-  ctx.fillStyle = "#ebebeb";
-  ctx.fillRect(0, 0, canvasEl.width, canvasEl.height);
+    scratchAudio = new Audio("./scratch.mp3");
+    scratchAudio.loop = true;
+    scratchAudio.volume = 0.5;
 
-  chatGPT();
+    window.addEventListener('mouseup', stopScratch);
+    window.addEventListener('touchend', stopScratch);
 });
 
 function getPos(e) {
@@ -32,12 +39,21 @@ function getPos(e) {
 }
 
 function startScratch(e) {
-  isScratching = true;
-  scratch(e);
+    isScratching = true;
+    scratch(e);
+
+    if (scratchAudio) {
+        scratchAudio.currentTime = 0;
+        scratchAudio.play();
+    }
 }
 
 function stopScratch() {
-  isScratching = false;
+    isScratching = false;
+
+    if (scratchAudio) {
+        scratchAudio.pause();
+    }
 }
 
 function scratch(e) {
@@ -82,27 +98,22 @@ async function chatGPT() {
 </script>
 
 <template>
-  <div id="random-page">
-    <h2>Daily Random Act of Kindness</h2>
-    <p>Scratch to reveal the message!</p>
+    <RandomTitle />
 
     <div class="scratch-container">
-      <div class="hidden-message">
-        <p>{{ hiddenText }}</p>
-      </div>
+        <div class="hidden-message">
+            <h3>{{ hiddenText }}</h3>
+        </div>
 
-      <canvas
-        ref="canvas"
-        class="scratch-canvas"
-        @mousedown="startScratch"
-        @mouseUp="stopScratch"
-        @mousemove="scratch"
-        @touchstart.prevent="startScratch"
-        @touchend.prevent="stopScratch"
-        @touchmove.prevent="scratch"
-      ></canvas>
+        <canvas 
+            ref="canvas"
+            class="scratch-canvas"
+            @mousedown="startScratch"
+            @mousemove="scratch"
+            @touchstart.prevent="startScratch"
+            @touchmove.prevent="scratch"
+        ></canvas>
     </div>
-  </div>
 </template>
 
 <style scoped>
@@ -126,11 +137,11 @@ canvas {
 }
 
 .scratch-container {
-  display: flex;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
-  margin-top: 100px;
+    display: flex;
+    margin-top: 100px;
+    justify-content: center;
+    width : 100vw;
+    height: 100vh;
 }
 
 .hidden-message {
@@ -159,8 +170,7 @@ canvas {
   touch-action: none;
 }
 
-h2,
-p {
-  text-align: center;
+h2, h3 {
+    text-align: center;
 }
 </style>
