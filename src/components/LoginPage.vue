@@ -23,7 +23,7 @@ async function login() {
 <template>
   <div id="login-container">
     <img class="logo" src="/images/textLogo.png" alt="" draggable="false" />
-    <form id="login">
+    <div id="login">
       <div class="input-container">
         <input
           class="input-field"
@@ -62,7 +62,7 @@ async function login() {
       <button @click="router.push({ name: 'register' })" class="login-button">
         {{ t("register.button") }}
       </button>
-    </form>
+    </div>
   </div>
 </template>
 
