@@ -2,9 +2,7 @@
 import { onMounted, ref } from "vue";
 
 const canvas = ref(null);
-const hiddenText = ref(
-  "Leave a book in a public place for someone else to find.",
-);
+const hiddenText = ref("");
 
 let isScratching = false;
 let ctx = null;
@@ -16,7 +14,7 @@ onMounted(() => {
   canvasEl.height = canvasEl.offsetHeight;
   ctx = canvasEl.getContext("2d");
 
-  ctx.fillStyle = "#aaa";
+  ctx.fillStyle = "#ebebeb";
   ctx.fillRect(0, 0, canvasEl.width, canvasEl.height);
 
   scratchAudio = new Audio("./scratch.mp3");
