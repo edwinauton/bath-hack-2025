@@ -3,6 +3,9 @@ import { onMounted, ref } from "vue";
 import { ref as dbRef, onValue, get, set, remove } from "firebase/database";
 import { db } from "../utils/firebase";
 import { getAuth } from "firebase/auth";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const requests = ref([]);
 
@@ -59,7 +62,7 @@ async function updateTotalStars(userID) {
 
 <template>
   <div id="requests-container">
-    <h2>Ongoing Requests</h2>
+    <h2>{{ t("requests.title") }}</h2>
     <div id="requests">
       <ul id="request-list">
         <li
@@ -78,7 +81,11 @@ async function updateTotalStars(userID) {
             <div class="request-header">
               <h2>{{ request.title }}</h2>
               <p>
-                Submitted {{ request.date }}
+                {{
+                  t("requests.label.date", {
+                    date: request.date,
+                  })
+                }}
 
                 <span v-if="request.tags.length" class="tag-container">
                   <span
@@ -94,12 +101,20 @@ async function updateTotalStars(userID) {
 
             <div v-if="request.isExpanded" class="request-body">
               <p>{{ request.description }}</p>
-              <p class="contact">Contact: {{ request.contact }}</p>
+              <p class="contact">
+                {{
+                  t("requests.label.contact", {
+                    contact: request.contact,
+                  })
+                }}
+              </p>
             </div>
           </div>
 
           <div class="request-button">
-            <button @click="handleRequest(request.id)">Accept</button>
+            <button @click="handleRequest(request.id)">
+              {{ t("requests.button.accept") }}
+            </button>
           </div>
         </li>
       </ul>

@@ -2,6 +2,9 @@
 import { ref } from "vue";
 import { ref as dbRef, push, set } from "firebase/database";
 import { db } from "../utils/firebase";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const title = ref("");
 const description = ref("");
@@ -52,7 +55,7 @@ function removeTag(tag) {
 <template>
   <div id="submit-container">
     <div class="submit-header">
-      <h2>Submit a Request</h2>
+      <h2>{{ t("submit.title") }}</h2>
       <button>
         <i
           class="fa-solid fa-arrow-right collapse-button"
@@ -65,17 +68,23 @@ function removeTag(tag) {
     <div id="submit" v-if="!collapsed">
       <div class="input-container">
         <input class="input-field" v-model="title" placeholder="" />
-        <label class="input-placeholder">Request Title</label>
+        <label class="input-placeholder">{{
+          t("submit.input.placeholder.title")
+        }}</label>
       </div>
 
       <div class="input-container">
         <input class="input-field" v-model="description" placeholder="" />
-        <label class="input-placeholder">Request Description</label>
+        <label class="input-placeholder">{{
+          t("submit.input.placeholder.description")
+        }}</label>
       </div>
 
       <div class="input-container">
         <input class="input-field" v-model="contact" placeholder="" />
-        <label class="input-placeholder">Contact</label>
+        <label class="input-placeholder">{{
+          t("submit.input.placeholder.contact")
+        }}</label>
       </div>
 
       <div class="input-container">
@@ -85,7 +94,9 @@ function removeTag(tag) {
           placeholder=""
           @keydown.enter="addNewTag(tag)"
         />
-        <label class="input-placeholder">Tags</label>
+        <label class="input-placeholder">{{
+          t("submit.input.placeholder.tags")
+        }}</label>
       </div>
 
       <div class="tag-container">
@@ -100,12 +111,12 @@ function removeTag(tag) {
         class="submit-button"
         :disabled="!title.trim() || !description.trim() || !selectedTags.length"
       >
-        Submit
+        {{ t("submit.button") }}
       </button>
     </div>
 
     <div class="submit-confirmation" v-if="confirmed && collapsed">
-      <p>Request submitted successfully!</p>
+      <p>{{ t("submit.label.confirmation") }}</p>
       <button class="close-button" @click="confirmed = false">
         <i class="fa-solid fa-xmark"></i>
       </button>

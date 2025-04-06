@@ -1,0 +1,36 @@
+{
+  "heatmap.title": "Heatmap",
+  "heatmap.tooltip": "{count} Stars}",
+
+  "login.input.placeholder.email": "Email",
+  "login.input.placeholder.password": "Password",
+  "login.button": "Log In",
+
+  "menu.tooltip.profile": "Profile",
+  "menu.tooltip.requests": "Requests",
+  "menu.tooltip.random": "Random",
+  "menu.tooltip.signOut": "Sign Out",
+
+  "random.title": "Daily Random Act of Kindness",
+  "random.subtitle": "Scratch to reveal the message!",
+
+  "register.input.placeholder.firstName": "First Name",
+  "register.input.placeholder.lastName": "Last Name",
+  "register.input.placeholder.username": "Username",
+  "register.input.placeholder.email": "Email",
+  "register.input.placeholder.password": "Password",
+  "register.button": "Register",
+
+  "requests.title": "Ongoing Requests",
+  "requests.label.date": "Submitted {date}",
+  "requests.label.contact": "Contact {contact}",
+  "requests.button.accept": "Accept",
+
+  "submit.title": "Submit Request",
+  "submit.input.placeholder.title": "Request Title",
+  "submit.input.placeholder.description": "Request Description",
+  "submit.input.placeholder.contact": "Contact",
+  "submit.input.placeholder.tags": "Tags",
+  "submit.button": "Submit",
+  "submit.label.confirmation": "Request submitted successfully!"
+}

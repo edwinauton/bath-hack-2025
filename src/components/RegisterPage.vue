@@ -44,22 +44,30 @@ async function register() {
           placeholder=""
           required
         />
-        <label class="input-placeholder">First Name</label>
+        <label class="input-placeholder">{{
+          t("register.input.placeholder.firstName")
+        }}</label>
       </div>
 
       <div class="input-container">
         <input class="input-field" v-model="lastName" placeholder="" required />
-        <label class="input-placeholder">Last Name</label>
+        <label class="input-placeholder">{{
+          t("register.input.placeholder.lastName")
+        }}</label>
       </div>
 
       <div class="input-container">
         <input class="input-field" v-model="username" placeholder="" required />
-        <label class="input-placeholder">Username</label>
+        <label class="input-placeholder">{{
+          t("register.input.placeholder.username")
+        }}</label>
       </div>
 
       <div class="input-container">
         <input class="input-field" v-model="email" placeholder="" required />
-        <label class="input-placeholder">Email</label>
+        <label class="input-placeholder">{{
+          t("register.input.placeholder.email")
+        }}</label>
       </div>
 
       <div class="input-container">
@@ -70,7 +78,9 @@ async function register() {
           placeholder=""
           required
         />
-        <label class="input-placeholder">Password</label>
+        <label class="input-placeholder">{{
+          t("register.input.placeholder.password")
+        }}</label>
       </div>
 
       <button
@@ -78,7 +88,7 @@ async function register() {
         class="login-button"
         :disabled="!email.trim() || !username.trim() || !password.trim()"
       >
-        Register
+        {{ t("register.button") }}
       </button>
     </div>
   </div>

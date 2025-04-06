@@ -1,5 +1,8 @@
 <script setup>
 import { onMounted, ref } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const canvas = ref(null);
 const hiddenText = ref("");
@@ -98,8 +101,8 @@ async function chatGPT() {
 <template>
   <div id="random-page">
     <div class="text-container">
-      <h2>Daily Random Act of Kindness</h2>
-      <p>Scratch to reveal the message!</p>
+      <h2>{{ t("random.title") }}</h2>
+      <p>{{ t("random.subtitle") }}</p>
     </div>
 
     <div class="scratch-container">

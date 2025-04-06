@@ -2,6 +2,9 @@
 import { onMounted, onUnmounted, ref } from "vue";
 import router from "../utils/router";
 import { getAuth } from "firebase/auth";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const isMenuVisible = ref(false);
 
@@ -32,7 +35,7 @@ function logout() {
       @click="router.push({ name: 'profile' })"
     >
       <i class="fa-solid fa-user"></i>
-      <span class="tooltip">Profile</span>
+      <span class="tooltip">{{ t("menu.tooltip.profile") }}</span>
     </button>
 
     <button
@@ -40,17 +43,17 @@ function logout() {
       @click="router.push({ name: 'requests' })"
     >
       <i class="fa-solid fa-sign-hanging"></i>
-      <span class="tooltip">Requests</span>
+      <span class="tooltip">{{ t("menu.tooltip.requests") }}</span>
     </button>
 
     <button class="menu-button random" @click="router.push({ name: 'random' })">
       <i class="fa-solid fa-dice-five"></i>
-      <span class="tooltip">Random</span>
+      <span class="tooltip">{{ t("menu.tooltip.random") }}</span>
     </button>
 
     <button class="menu-button sign-out" @click="logout">
       <i class="fa-solid fa-right-from-bracket"></i>
-      <span class="tooltip">Sign Out</span>
+      <span class="tooltip">{{ t("menu.tooltip.signOut") }}</span>
     </button>
   </div>
 

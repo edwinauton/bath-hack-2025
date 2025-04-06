@@ -2,6 +2,9 @@
 import { ref } from "vue";
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
 import router from "../utils/router";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const email = ref("");
 const password = ref("");
@@ -23,7 +26,9 @@ async function login() {
     <div class="login-container">
       <div class="input-container">
         <input class="input-field" v-model="email" placeholder="" required />
-        <label class="input-placeholder">Email</label>
+        <label class="input-placeholder">{{
+          t("login.input.placeholder.email")
+        }}</label>
       </div>
 
       <div class="input-container">
@@ -34,7 +39,9 @@ async function login() {
           placeholder=""
           required
         />
-        <label class="input-placeholder">Password</label>
+        <label class="input-placeholder">{{
+          t("login.input.placeholder.password")
+        }}</label>
       </div>
 
       <button
@@ -42,11 +49,11 @@ async function login() {
         class="login-button"
         :disabled="!email.trim() || !password.trim()"
       >
-        Login
+        {{ t("login.button") }}
       </button>
 
       <button @click="router.push({ name: 'register' })" class="login-button">
-        Register
+        {{ t("register.button") }}
       </button>
     </div>
   </div>
