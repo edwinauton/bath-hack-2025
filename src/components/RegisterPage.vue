@@ -125,7 +125,7 @@ async function register() {
 }
 
 .login-button:hover {
-  background-color: #a2bffe;
+  background-color: #c0d7ff;
 }
 
 .login-button:disabled {
