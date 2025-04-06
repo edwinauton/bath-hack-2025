@@ -127,6 +127,7 @@ async function chatGPT() {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  user-select: none;
 }
 
 #random-page h2 {
