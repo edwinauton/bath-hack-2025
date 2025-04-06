@@ -97,7 +97,7 @@ async function login() {
 .login-button {
   all: unset;
   padding: 5px 0 5px 0;
-  border: 3px solid black;
+  border: 2px solid black;
   border-radius: 10px;
   transition: all 0.3s ease;
   font-weight: bold;
