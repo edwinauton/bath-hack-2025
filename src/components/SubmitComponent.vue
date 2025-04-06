@@ -213,7 +213,7 @@ watch(tag, (newTag) => {
 }
 
 .submit-button:hover {
-  background-color: #a2bffe;
+  background-color: #c0d7ff;
 }
 
 .submit-button:disabled {
@@ -273,6 +273,7 @@ watch(tag, (newTag) => {
 .dropdown {
   position: absolute;
   top: 370px;
+  z-index: 9999;
 }
 
 .dropdown-item {
@@ -282,7 +283,7 @@ watch(tag, (newTag) => {
 }
 
 .dropdown-item:hover {
-  background-color: #a2bffe;
+  background-color: #b4cbfe;
 }
 
 /* Animations - used despite warnings */

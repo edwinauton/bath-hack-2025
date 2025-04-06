@@ -287,6 +287,7 @@ watch(search, (newSearch) => {
 .dropdown {
   position: absolute;
   top: 290px;
+  z-index: 9999;
 }
 
 .dropdown-item {
@@ -296,7 +297,7 @@ watch(search, (newSearch) => {
 }
 
 .dropdown-item:hover {
-  background-color: #a2bffe;
+  background-color: #b4cbfe;
 }
 
 /* Animations - used despite warnings */

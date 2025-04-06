@@ -92,7 +92,7 @@ function logout() {
 }
 
 .menu-button:hover {
-  background-color: #a2bffe;
+  background-color: #b4cbfe;
 }
 
 .tooltip {
