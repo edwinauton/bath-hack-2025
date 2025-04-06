@@ -27,8 +27,8 @@ async function register() {
       username: username.value,
     });
     await router.push({ name: "login" });
-  } catch (err) {
-    console.log(err.message);
+  } catch (error) {
+    console.error(error.message);
   }
 }
 </script>

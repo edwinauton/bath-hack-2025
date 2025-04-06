@@ -87,7 +87,6 @@ async function getUserStars(userID) {
   const userStarsRef = dbRef(db, `users/${userID}/stars/total`);
   const snapshot = await get(userStarsRef);
   userStars.value = snapshot.val();
-  console.log("User stars:", userStars.value);
 }
 </script>
 

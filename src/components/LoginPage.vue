@@ -11,8 +11,8 @@ async function login() {
     const auth = getAuth();
     await signInWithEmailAndPassword(auth, email.value, password.value);
     await router.push({ name: "profile" });
-  } catch (err) {
-    console.log(err.message);
+  } catch (error) {
+    console.error(error.message);
   }
 }
 </script>
