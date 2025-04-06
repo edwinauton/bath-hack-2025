@@ -21,7 +21,7 @@
   "register.input.placeholder.password": "Password",
   "register.button": "Register",
 
-  "requests.title": "Ongoing Requests",
+  "requests.title": "Open Requests",
   "requests.input.placeholder.searchTags": "Search Tags...",
   "requests.label.date": "Submitted {date}",
   "requests.label.contact": "Contact {contact}",

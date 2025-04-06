@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from "vue";
-import { ref as dbRef, push, set, get } from "firebase/database";
+import { ref as dbRef, push, set, get, update } from "firebase/database";
 import { db } from "../utils/firebase";
 import { useI18n } from "vue-i18n";
 
@@ -18,7 +18,6 @@ const collapsed = ref(true);
 const confirmed = ref(false);
 
 async function submit() {
-  collapsed.value = !collapsed.value;
   confirmed.value = true;
 
   const formattedDate = new Date().toISOString().split("T")[0];
@@ -40,6 +39,8 @@ async function submit() {
   contact.value = "";
   tag.value = "";
   selectedTags.value = [];
+
+  collapsed.value = !collapsed.value;
 }
 
 function addNewTag(name) {
@@ -56,14 +57,20 @@ function removeTag(tag) {
 }
 
 async function createTags() {
-  const existingTagsRef = dbRef(db, "tags");
-  let existingTags = await get(existingTagsRef);
-  existingTags = existingTags.exists() ? existingTags.val() : [];
+  const tagsRef = dbRef(db, "tags");
+  const snapshot = await get(tagsRef);
+  const existingTags = snapshot.exists() ? snapshot.val() : {};
+
+  const updates = {};
 
   for (const tag of selectedTags.value) {
-    if (!existingTags.includes(tag)) {
-      await set(dbRef(db, `tags/${tag}`), true);
+    if (!existingTags[tag]) {
+      updates[`tags/${tag}`] = true;
     }
+  }
+
+  if (Object.keys(updates).length > 0) {
+    await update(dbRef(db), updates);
   }
 }
 
@@ -97,73 +104,78 @@ watch(tag, (newTag) => {
       </button>
     </div>
 
-    <div id="submit" v-if="!collapsed">
-      <div class="input-container">
-        <input class="input-field" v-model="title" placeholder="" />
-        <label class="input-placeholder">{{
-          t("submit.input.placeholder.title")
-        }}</label>
-      </div>
-
-      <div class="input-container">
-        <input class="input-field" v-model="description" placeholder="" />
-        <label class="input-placeholder">{{
-          t("submit.input.placeholder.description")
-        }}</label>
-      </div>
-
-      <div class="input-container">
-        <input class="input-field" v-model="contact" placeholder="" />
-        <label class="input-placeholder">{{
-          t("submit.input.placeholder.contact")
-        }}</label>
-      </div>
-
-      <div class="input-container">
-        <input
-          class="input-field"
-          v-model="tag"
-          placeholder=""
-          @keydown.enter="addNewTag(tag)"
-        />
-        <label class="input-placeholder">{{
-          t("submit.input.placeholder.tags")
-        }}</label>
-      </div>
-
-      <div class="tag-container">
-        <span v-for="(tag, index) in selectedTags" :key="index" class="tag">
-          {{ tag }}
-          <button @click="removeTag(tag)">x</button>
-        </span>
-      </div>
-
-      <div v-if="matchingTags.length" class="dropdown">
-        <div
-          v-for="tag in matchingTags"
-          :key="tag"
-          @click="addNewTag(tag)"
-          class="dropdown-item"
-        >
-          {{ tag }}
+    <transition name="smooth-collapse">
+      <div id="submit" v-if="!collapsed">
+        <div class="input-container">
+          <input class="input-field" v-model="title" placeholder="" />
+          <label class="input-placeholder">{{
+            t("submit.input.placeholder.title")
+          }}</label>
         </div>
+
+        <div class="input-container">
+          <input class="input-field" v-model="description" placeholder="" />
+          <label class="input-placeholder">{{
+            t("submit.input.placeholder.description")
+          }}</label>
+        </div>
+
+        <div class="input-container">
+          <input class="input-field" v-model="contact" placeholder="" />
+          <label class="input-placeholder">{{
+            t("submit.input.placeholder.contact")
+          }}</label>
+        </div>
+
+        <div class="input-container">
+          <input
+            class="input-field"
+            v-model="tag"
+            placeholder=""
+            @keydown.enter="addNewTag(tag)"
+          />
+          <label class="input-placeholder">{{
+            t("submit.input.placeholder.tags")
+          }}</label>
+        </div>
+
+        <transition-group name="shrink-tag" tag="span" class="tag-container">
+          <span v-for="(tag, index) in selectedTags" :key="index" class="tag">
+            {{ tag }}
+            <button @click="removeTag(tag)">x</button>
+          </span>
+        </transition-group>
+
+        <div v-if="matchingTags.length" class="dropdown">
+          <div
+            v-for="tag in matchingTags"
+            :key="tag"
+            @click="addNewTag(tag)"
+            class="dropdown-item"
+          >
+            {{ tag }}
+          </div>
+        </div>
+
+        <button
+          @click="submit"
+          class="submit-button"
+          :disabled="
+            !title.trim() || !description.trim() || !selectedTags.length
+          "
+        >
+          {{ t("submit.button") }}
+        </button>
       </div>
-
-      <button
-        @click="submit"
-        class="submit-button"
-        :disabled="!title.trim() || !description.trim() || !selectedTags.length"
-      >
-        {{ t("submit.button") }}
-      </button>
-    </div>
-
-    <div class="submit-confirmation" v-if="confirmed && collapsed">
-      <p>{{ t("submit.label.confirmation") }}</p>
-      <button class="close-button" @click="confirmed = false">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-    </div>
+    </transition>
+    <transition name="fade-slide">
+      <div class="submit-confirmation" v-if="confirmed && collapsed">
+        <p>{{ t("submit.label.confirmation") }}</p>
+        <button class="close-button" @click="confirmed = false">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -271,5 +283,59 @@ watch(tag, (newTag) => {
 
 .dropdown-item:hover {
   background-color: #a2bffe;
+}
+
+/* Animations - used despite warnings */
+
+.smooth-collapse-enter-active,
+.smooth-collapse-leave-active {
+  transition: all 0.7s ease;
+  overflow: hidden;
+}
+
+.smooth-collapse-enter-from,
+.smooth-collapse-leave-to {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.smooth-collapse-enter-to,
+.smooth-collapse-leave-from {
+  max-height: 1000px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.3s ease;
+}
+
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.fade-slide-enter-to,
+.fade-slide-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.shrink-tag-enter-active,
+.shrink-tag-leave-active {
+  transition: all 0.3s ease;
+}
+
+.shrink-tag-enter-from,
+.shrink-tag-leave-to {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.shrink-tag-leave-active {
+  position: absolute;
 }
 </style>

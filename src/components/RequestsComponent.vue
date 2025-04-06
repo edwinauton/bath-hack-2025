@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
-import { ref as dbRef, onValue, get, set, remove } from "firebase/database";
+import { ref as dbRef, get, onValue, set, remove } from "firebase/database";
 import { db } from "../utils/firebase";
 import { getAuth } from "firebase/auth";
 import { useI18n } from "vue-i18n";
@@ -125,15 +125,15 @@ watch(search, (newSearch) => {
       </div>
     </div>
 
-    <div class="search-container">
+    <transition-group name="shrink-tag" tag="span" class="search-container">
       <span v-for="(tag, index) in selectedTags" :key="index" class="tag">
         {{ tag }}
         <button @click="removeTag(tag)">x</button>
       </span>
-    </div>
+    </transition-group>
 
     <div id="requests">
-      <ul id="request-list">
+      <transition-group name="fade-slide" tag="ul" id="request-list">
         <li
           v-for="request in filterRequestsByTags()"
           :key="request.id"
@@ -186,7 +186,7 @@ watch(search, (newSearch) => {
             </button>
           </div>
         </li>
-      </ul>
+      </transition-group>
     </div>
   </div>
 </template>
@@ -251,13 +251,6 @@ watch(search, (newSearch) => {
   font-weight: bold;
 }
 
-.tag {
-  background-color: #c5a3ff;
-  padding: 5px;
-  border-radius: 15px;
-  font-weight: normal;
-}
-
 .tag-container {
   display: inline-flex;
   margin-left: 10px;
@@ -273,6 +266,8 @@ watch(search, (newSearch) => {
   background-color: #c5a3ff;
   padding: 5px;
   border-radius: 15px;
+  font-weight: normal;
+  position: relative;
 }
 
 .search-container {
@@ -302,5 +297,39 @@ watch(search, (newSearch) => {
 
 .dropdown-item:hover {
   background-color: #a2bffe;
+}
+
+/* Animations - used despite warnings */
+
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.7s ease;
+}
+
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.fade-slide-enter-to,
+.fade-slide-leave-from {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.shrink-tag-enter-active,
+.shrink-tag-leave-active {
+  transition: all 0.3s ease;
+}
+
+.shrink-tag-enter-from,
+.shrink-tag-leave-to {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.shrink-tag-leave-active {
+  position: absolute;
 }
 </style>
