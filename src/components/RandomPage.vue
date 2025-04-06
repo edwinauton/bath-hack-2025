@@ -1,11 +1,13 @@
 <script setup>
 import { onMounted, ref } from "vue";
+import RandomTitle from "./RandomTitle.vue";
 
 const canvas = ref(null);
 const hiddenText = ref("Leave a book in a public place for someone else to find.");
 
 let isScratching = false;
 let ctx = null;
+let scratchAudio = null;
 
 onMounted(() => {
     const canvasEl = canvas.value;
@@ -15,6 +17,13 @@ onMounted(() => {
 
     ctx.fillStyle = "#aaa";
     ctx.fillRect(0, 0, canvasEl.width, canvasEl.height);
+
+    scratchAudio = new Audio("./scratch.mp3");
+    scratchAudio.loop = true;
+    scratchAudio.volume = 0.5;
+
+    window.addEventListener('mouseup', stopScratch);
+    window.addEventListener('touchend', stopScratch);
 });
 
 function getPos(e) {
@@ -30,10 +39,19 @@ function getPos(e) {
 function startScratch(e) {
     isScratching = true;
     scratch(e);
+
+    if (scratchAudio) {
+        scratchAudio.currentTime = 0;
+        scratchAudio.play();
+    }
 }
 
 function stopScratch() {
     isScratching = false;
+
+    if (scratchAudio) {
+        scratchAudio.pause();
+    }
 }
 
 function scratch(e) {
@@ -48,21 +66,19 @@ function scratch(e) {
 </script>
 
 <template>
-    <h2>Daily Random Act of Kindness</h2>
-    <p>Scratch to reveal the message!</p>
+    <RandomTitle />
+
     <div class="scratch-container">
         <div class="hidden-message">
-            <p>{{ hiddenText }}</p>
+            <h3>{{ hiddenText }}</h3>
         </div>
 
         <canvas 
             ref="canvas"
             class="scratch-canvas"
             @mousedown="startScratch"
-            @mouseUp="stopScratch"
             @mousemove="scratch"
             @touchstart.prevent="startScratch"
-            @touchend.prevent="stopScratch"
             @touchmove.prevent="scratch"
         ></canvas>
     </div>
@@ -75,7 +91,7 @@ canvas {
 
 .scratch-container {
     display: flex;
-    align-items: center;
+    margin-top: 100px;
     justify-content: center;
     width : 100vw;
     height: 100vh;
@@ -100,7 +116,7 @@ canvas {
     touch-action: none;
 }
 
-h2, p {
+h2, h3 {
     text-align: center;
 }
 </style>
