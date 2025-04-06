@@ -1,11 +1,11 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import RandomTitle from "./RandomTitle.vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const canvas = ref(null);
-const hiddenText = ref(
-  "Leave a book in a public place for someone else to find.",
-);
+const hiddenText = ref("");
 
 let isScratching = false;
 let ctx = null;
@@ -16,16 +16,18 @@ onMounted(() => {
   canvasEl.width = canvasEl.offsetWidth;
   canvasEl.height = canvasEl.offsetHeight;
   ctx = canvasEl.getContext("2d");
-  
-    ctx.fillStyle = "#aaa";
-    ctx.fillRect(0, 0, canvasEl.width, canvasEl.height);
 
-    scratchAudio = new Audio("./scratch.mp3");
-    scratchAudio.loop = true;
-    scratchAudio.volume = 0.5;
+  ctx.fillStyle = "#ebebeb";
+  ctx.fillRect(0, 0, canvasEl.width, canvasEl.height);
 
-    window.addEventListener('mouseup', stopScratch);
-    window.addEventListener('touchend', stopScratch);
+  scratchAudio = new Audio("./scratch.mp3");
+  scratchAudio.loop = true;
+  scratchAudio.volume = 0.5;
+
+  window.addEventListener("mouseup", stopScratch);
+  window.addEventListener("touchend", stopScratch);
+
+  chatGPT();
 });
 
 function getPos(e) {
@@ -39,21 +41,21 @@ function getPos(e) {
 }
 
 function startScratch(e) {
-    isScratching = true;
-    scratch(e);
+  isScratching = true;
+  scratch(e);
 
-    if (scratchAudio) {
-        scratchAudio.currentTime = 0;
-        scratchAudio.play();
-    }
+  if (scratchAudio) {
+    scratchAudio.currentTime = 0;
+    scratchAudio.play();
+  }
 }
 
 function stopScratch() {
-    isScratching = false;
+  isScratching = false;
 
-    if (scratchAudio) {
-        scratchAudio.pause();
-    }
+  if (scratchAudio) {
+    scratchAudio.pause();
+  }
 }
 
 function scratch(e) {
@@ -92,28 +94,32 @@ async function chatGPT() {
   });
 
   const data = await response.json();
-  console.log(data.choices[0].message.content);
   hiddenText.value = data.choices[0].message.content;
 }
 </script>
 
 <template>
-    <RandomTitle />
+  <div id="random-page">
+    <div class="text-container">
+      <h2>{{ t("random.title") }}</h2>
+      <p>{{ t("random.subtitle") }}</p>
+    </div>
 
     <div class="scratch-container">
-        <div class="hidden-message">
-            <h3>{{ hiddenText }}</h3>
-        </div>
+      <div class="hidden-message">
+        <h3>{{ hiddenText }}</h3>
+      </div>
 
-        <canvas 
-            ref="canvas"
-            class="scratch-canvas"
-            @mousedown="startScratch"
-            @mousemove="scratch"
-            @touchstart.prevent="startScratch"
-            @touchmove.prevent="scratch"
-        ></canvas>
+      <canvas
+        ref="canvas"
+        class="scratch-canvas"
+        @mousedown="startScratch"
+        @mousemove="scratch"
+        @touchstart.prevent="startScratch"
+        @touchmove.prevent="scratch"
+      ></canvas>
     </div>
+  </div>
 </template>
 
 <style scoped>
@@ -121,6 +127,7 @@ async function chatGPT() {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  user-select: none;
 }
 
 #random-page h2 {
@@ -137,11 +144,11 @@ canvas {
 }
 
 .scratch-container {
-    display: flex;
-    margin-top: 100px;
-    justify-content: center;
-    width : 100vw;
-    height: 100vh;
+  display: flex;
+  margin-top: 100px;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
 }
 
 .hidden-message {
@@ -170,7 +177,9 @@ canvas {
   touch-action: none;
 }
 
-h2, h3 {
-    text-align: center;
+h2,
+h3,
+p {
+  text-align: center;
 }
 </style>

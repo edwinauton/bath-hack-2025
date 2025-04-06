@@ -19,7 +19,7 @@ onMounted(async () => {
     const snapshot = await get(userRef);
     user.value = snapshot.val();
   } catch (error) {
-    console.error("Error fetching user data:", error);
+    console.error(error);
   }
 });
 </script>

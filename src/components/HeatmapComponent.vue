@@ -3,6 +3,9 @@ import { onMounted, ref } from "vue";
 import { get, ref as dbRef } from "firebase/database";
 import { db } from "../utils/firebase";
 import { getAuth } from "firebase/auth";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 async function getLast100Days() {
   const today = new Date();
@@ -36,10 +39,10 @@ const startDate = new Date(endDate);
 startDate.setDate(endDate.getDate() - 99);
 
 function getColor(date) {
-  if (!date.count) return "#f4f4f4"; // No activity
-  if (date.count <= 1) return "#d0f0c0"; // Light activity
-  if (date.count <= 2) return "#8bc34a"; // Medium activity
-  return "#4caf50"; // High activity
+  if (!date.count) return "#f9f9f9"; // No activity
+  if (date.count <= 1) return "#e0c7f9"; // Light activity
+  if (date.count <= 2) return "#d7a7ff"; // Medium activity
+  return "#c878ff"; // High activity
 }
 
 async function generateHeatmap() {
@@ -82,7 +85,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <h2>Heatmap</h2>
+  <h2>{{ t("heatmap.title") }}</h2>
   <div id="heatmap-container">
     <div id="heatmap">
       <div v-for="(column, index) in heatmap" :key="index" class="column">
@@ -94,7 +97,13 @@ onMounted(() => {
             backgroundColor: getColor(square),
           }"
         >
-          <span class="tooltip">{{ `${square.count} Stars` }}</span>
+          <span class="tooltip">
+            {{
+              t("heatmap.tooltip", {
+                count: square.count,
+              })
+            }}
+          </span>
         </div>
       </div>
     </div>

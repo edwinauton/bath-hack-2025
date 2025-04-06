@@ -4,6 +4,9 @@ import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { ref as dbRef, set } from "firebase/database";
 import router from "../utils/router";
 import { db } from "../utils/firebase";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const firstName = ref("");
 const lastName = ref("");
@@ -14,22 +17,21 @@ const password = ref("");
 async function register() {
   try {
     const auth = getAuth();
-    await createUserWithEmailAndPassword(
+    const userCredential = await createUserWithEmailAndPassword(
       auth,
       email.value,
       password.value,
-    ).then(async (userCredential) => {
-      const user = userCredential.user;
-      const userRef = dbRef(db, `users/${user.uid}`);
-      await set(userRef, {
-        first_name: firstName.value,
-        last_name: lastName.value,
-        username: username.value,
-      });
+    );
+    const user = userCredential.user;
+    const userRef = dbRef(db, `users/${user.uid}`);
+    await set(userRef, {
+      first_name: firstName.value,
+      last_name: lastName.value,
+      username: username.value,
     });
     await router.push({ name: "login" });
-  } catch (err) {
-    console.log(err.message);
+  } catch (error) {
+    console.error(error.message);
   }
 }
 </script>
@@ -45,22 +47,30 @@ async function register() {
           placeholder=""
           required
         />
-        <label class="input-placeholder">First Name</label>
+        <label class="input-placeholder">{{
+          t("register.input.placeholder.firstName")
+        }}</label>
       </div>
 
       <div class="input-container">
         <input class="input-field" v-model="lastName" placeholder="" required />
-        <label class="input-placeholder">Last Name</label>
+        <label class="input-placeholder">{{
+          t("register.input.placeholder.lastName")
+        }}</label>
       </div>
 
       <div class="input-container">
         <input class="input-field" v-model="username" placeholder="" required />
-        <label class="input-placeholder">Username</label>
+        <label class="input-placeholder">{{
+          t("register.input.placeholder.username")
+        }}</label>
       </div>
 
       <div class="input-container">
         <input class="input-field" v-model="email" placeholder="" required />
-        <label class="input-placeholder">Email</label>
+        <label class="input-placeholder">{{
+          t("register.input.placeholder.email")
+        }}</label>
       </div>
 
       <div class="input-container">
@@ -71,7 +81,9 @@ async function register() {
           placeholder=""
           required
         />
-        <label class="input-placeholder">Password</label>
+        <label class="input-placeholder">{{
+          t("register.input.placeholder.password")
+        }}</label>
       </div>
 
       <button
@@ -79,7 +91,7 @@ async function register() {
         class="login-button"
         :disabled="!email.trim() || !username.trim() || !password.trim()"
       >
-        Register
+        {{ t("register.button") }}
       </button>
     </div>
   </div>
@@ -115,7 +127,7 @@ async function register() {
 .login-button {
   all: unset;
   padding: 5px 0 5px 0;
-  border: 3px solid black;
+  border: 2px solid black;
   border-radius: 10px;
   transition: all 0.3s ease;
   font-weight: bold;
@@ -126,7 +138,7 @@ async function register() {
 }
 
 .login-button:hover {
-  background-color: #a2bffe;
+  background-color: #c0d7ff;
 }
 
 .login-button:disabled {

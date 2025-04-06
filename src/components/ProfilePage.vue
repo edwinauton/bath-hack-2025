@@ -1,13 +1,13 @@
 <script setup>
-import Info from "./Info.vue";
-import Badges from "./Badges.vue";
-import Heatmap from "./Heatmap.vue";
+import InfoComponent from "./InfoComponent.vue";
+import BadgesComponent from "./BadgesComponent.vue";
+import HeatmapComponent from "./HeatmapComponent.vue";
 </script>
 
 <template>
-  <Info />
-  <Badges />
-  <Heatmap />
+  <InfoComponent />
+  <BadgesComponent />
+  <HeatmapComponent />
 </template>
 
 <style scoped></style>
