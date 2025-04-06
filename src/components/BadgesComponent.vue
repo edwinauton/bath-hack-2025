@@ -3,76 +3,74 @@ import { reactive, ref } from "vue";
 import { getAuth } from "firebase/auth";
 import { get, ref as dbRef } from "firebase/database";
 import { db } from "../utils/firebase";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const badges = reactive([
   {
-    name: "Gemini",
-    description:
-      "Twins unite! You’ve earned the two brightest stars of Gemini.",
+    name: "badge.gemini.name",
+    description: "badge.gemini.description",
     requirement: 2,
     source: "/images/gemini.png",
   },
   {
-    name: "Cassiopeia",
-    description: "The five stars of the Queen’s throne are now yours!",
+    name: "badge.cassiopeia.name",
+    description: "badge.cassiopeia.description",
     requirement: 5,
     source: "/images/cassiopeia.png",
   },
   {
-    name: "Lyra",
-    description:
-      "You’ve strummed the strings of the Lyre, earning its six stars!",
+    name: "badge.lyra.name",
+    description: "badge.lyra.description",
     requirement: 6,
     source: "/images/lyra.png",
   },
   {
-    name: "Cygnus",
-    description: "You’ve soared through the Swan and earned its seven stars!",
+    name: "badge.cygnus.name",
+    description: "badge.cygnus.description",
     requirement: 7,
     source: "/images/cygnus.png",
   },
   {
-    name: "Andromeda",
-    description: "The chained princess offers you her nine shining stars.",
+    name: "badge.andromeda.name",
+    description: "badge.andromeda.description",
     requirement: 9,
     source: "/images/andromeda.png",
   },
   {
-    name: "Leo",
-    description: "The Lion roars with its ten stars in your grasp!",
+    name: "badge.leo.name",
+    description: "badge.leo.description",
     requirement: 10,
     source: "/images/leo.png",
   },
   {
-    name: "Aquarius",
-    description:
-      "The Water Bearer flows with eleven stars into your collection.",
+    name: "badge.aquarius.name",
+    description: "badge.aquarius.description",
     requirement: 11,
     source: "/images/aquarius.png",
   },
   {
-    name: "Hydra",
-    description: "The serpent’s head has gifted you its twelve stars!",
+    name: "badge.hydra.name",
+    description: "badge.hydra.description",
     requirement: 12,
     source: "/images/hydra.png",
   },
   {
-    name: "Scorpius",
-    description: "You’ve captured the thirteen stars of the Scorpion!",
+    name: "badge.scorpius.name",
+    description: "badge.scorpius.description",
     requirement: 13,
     source: "/images/scorpius.png",
   },
   {
-    name: "Pegasus",
-    description:
-      "You’ve galloped across the sky with Pegasus’s fourteen stars!",
+    name: "badge.pegasus.name",
+    description: "badge.pegasus.description",
     requirement: 14,
     source: "/images/pegasus.png",
   },
   {
-    name: "Orion",
-    description:
-      "You’ve earned the bright stars of the Hunter’s Belt and Sword!",
+    name: "badge.orion.name",
+    description: "badge.orion.description",
     requirement: 15,
     source: "/images/orion.png",
   },
@@ -103,8 +101,8 @@ async function getUserStars(userID) {
           <img :src="badge.source" alt="" draggable="false" />
         </div>
         <div class="badge-back">
-          <h3>{{ badge.name }}</h3>
-          <p>{{ badge.description }}</p>
+          <h3>{{ t(badge.name) }}</h3>
+          <p>{{ t(badge.description) }}</p>
         </div>
       </div>
     </div>
@@ -132,8 +130,8 @@ async function getUserStars(userID) {
 
 .badge-inner {
   position: relative;
-  width: 95%;
-  height: 95%;
+  width: 100%;
+  height: 100%;
   text-align: center;
   transition: transform 0.6s;
   transform-style: preserve-3d;
