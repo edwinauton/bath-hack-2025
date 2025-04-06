@@ -14,18 +14,17 @@ const password = ref("");
 async function register() {
   try {
     const auth = getAuth();
-    await createUserWithEmailAndPassword(
+    const userCredential = await createUserWithEmailAndPassword(
       auth,
       email.value,
       password.value,
-    ).then(async (userCredential) => {
-      const user = userCredential.user;
-      const userRef = dbRef(db, `users/${user.uid}`);
-      await set(userRef, {
-        first_name: firstName.value,
-        last_name: lastName.value,
-        username: username.value,
-      });
+    );
+    const user = userCredential.user;
+    const userRef = dbRef(db, `users/${user.uid}`);
+    await set(userRef, {
+      first_name: firstName.value,
+      last_name: lastName.value,
+      username: username.value,
     });
     await router.push({ name: "login" });
   } catch (err) {

@@ -33,15 +33,27 @@ async function handleRequest(requestId) {
   const removeRef = dbRef(db, `requests/${requestId}`);
   await remove(removeRef);
 
-  // +1 to user's daily stars
   const auth = getAuth();
   const userID = auth.currentUser.uid;
-  const formattedDate = new Date().toISOString().split("T")[0];
+  await updateDayStars(userID);
+  await updateTotalStars(userID);
+}
 
-  const incrementRef = dbRef(db, `users/${userID}/stars/${formattedDate}`);
-  const snapshot = await get(incrementRef);
+// +1 to user's daily stars
+async function updateDayStars(userID) {
+  const formattedDate = new Date().toISOString().split("T")[0];
+  const incrementDayRef = dbRef(db, `users/${userID}/stars/${formattedDate}`);
+  const snapshot = await get(incrementDayRef);
   let stars = snapshot.exists() ? snapshot.val() : 0; // stars = 0 if key doesn't exist
-  await set(incrementRef, (stars += 1));
+  await set(incrementDayRef, stars + 1);
+}
+
+// +1 to user's total stars
+async function updateTotalStars(userID) {
+  const incrementTotalRef = dbRef(db, `users/${userID}/stars/total`);
+  const snapshot = await get(incrementTotalRef);
+  let stars = snapshot.exists() ? snapshot.val() : 0; // stars = 0 if key doesn't exist
+  await set(incrementTotalRef, stars + 1);
 }
 </script>
 
