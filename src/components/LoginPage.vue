@@ -21,11 +21,17 @@ async function login() {
 </script>
 
 <template>
-  <div id="login">
+  <div id="login-container">
     <img class="logo" src="/images/textLogo.png" alt="" draggable="false" />
-    <div class="login-container">
+    <form id="login">
       <div class="input-container">
-        <input class="input-field" v-model="email" placeholder="" required />
+        <input
+          class="input-field"
+          v-model="email"
+          autocomplete="username"
+          placeholder=""
+          required
+        />
         <label class="input-placeholder">{{
           t("login.input.placeholder.email")
         }}</label>
@@ -35,6 +41,7 @@ async function login() {
         <input
           class="input-field"
           v-model="password"
+          autocomplete="password"
           type="password"
           placeholder=""
           required
@@ -55,12 +62,12 @@ async function login() {
       <button @click="router.push({ name: 'register' })" class="login-button">
         {{ t("register.button") }}
       </button>
-    </div>
+    </form>
   </div>
 </template>
 
 <style scoped>
-#login {
+#login-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -73,7 +80,7 @@ async function login() {
   width: 350px;
 }
 
-.login-container {
+#login {
   display: flex;
   flex-direction: column;
   justify-content: center;

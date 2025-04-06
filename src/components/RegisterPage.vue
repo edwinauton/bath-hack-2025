@@ -4,6 +4,9 @@ import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { ref as dbRef, set } from "firebase/database";
 import router from "../utils/router";
 import { db } from "../utils/firebase";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const firstName = ref("");
 const lastName = ref("");
