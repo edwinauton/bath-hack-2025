@@ -1,6 +1,6 @@
 {
   "heatmap.title": "Heatmap",
-  "heatmap.tooltip": "{count} Stars}",
+  "heatmap.tooltip": "0 Stars | 1 Star | {count} Stars",
 
   "login.input.placeholder.email": "Email",
   "login.input.placeholder.password": "Password",
@@ -11,8 +11,8 @@
   "menu.tooltip.random": "Random",
   "menu.tooltip.signOut": "Sign Out",
 
-  "random.title": "Daily Random Act of Kindness",
-  "random.subtitle": "Scratch to reveal the message!",
+  "random.title": "Random Act of Kindness",
+  "random.subtitle": "Scratch to reveal the suggestion!",
 
   "register.input.placeholder.firstName": "First Name",
   "register.input.placeholder.lastName": "Last Name",
